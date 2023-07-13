@@ -1,0 +1,114 @@
+﻿a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+header {
+    position: relative; 
+    width: 100%;
+    height: 130px;
+    background-color: rgb(25, 27, 28);
+}
+
+.tools-header {
+    height: 75%;
+    width: 85%;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.form-search {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 10px;
+}
+
+    .form-search button {
+        position: absolute;
+        top: 40%;
+        right: 10px;
+        transform: translateY(-50%);
+        border: none;
+        background: transparent;
+        opacity: 0.5;
+    }
+
+    .form-search input {
+        position: relative;
+        padding-right: 100px;
+        padding-left: 20px;
+        width: 700px;
+        height: 50px;
+        font-size: 18px;
+        background-color: lightgray;
+        border-radius: 10px;
+    }
+
+    .form-search input:hover {
+        background-color: white;
+    }
+
+    .form-search .icon-search {
+        width: 20px;
+        margin-right: 10px;
+    }
+
+.logo {
+    width: 200px;
+}
+
+.personal-tools {
+    display: inline-block;
+    position: absolute;
+    top: 35px;
+    font-size: 18px;
+}
+
+    .personal-tools button {
+        border: none;
+        background: transparent;
+        color: white;
+        margin: 0px 20px;
+    }
+
+.btn-message, .btn-office,
+.btn-favorite, .btn-cart {
+    position: relative;
+    padding-top: 10px;
+}
+
+    .btn-message img, .btn-office img,
+    .btn-favorite img, .btn-cart img {
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        width: 35px;
+        transform: translateX(-50%);
+    }
+
+.menu-header {
+   position: absolute;
+   top: 85%;
+   left: 15%;
+}
+
+    .menu-header-category {
+
+    }
+
+        .menu-header-category button {
+            border: none;
+            background: transparent;
+            color: lightgray;
+            font-size: 18px;
+            margin: 0px 10px;
+        }
