@@ -101,10 +101,6 @@ header {
    left: 15%;
 }
 
-    .menu-header-category {
-
-    }
-
         .menu-header-category button {
             border: none;
             background: transparent;
@@ -112,3 +108,17 @@ header {
             font-size: 18px;
             margin: 0px 10px;
         }
+
+.category-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    background-color: rgb(25, 27, 28);
+    padding: 10px;
+}
+
+
+    .menu-button:hover + .category-dropdown,
+    .category-dropdown:hover {
+        display: block;
+    }

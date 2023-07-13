@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import './NavMenu.css';
+import MenuHeader from './MenuHeader';
 
 export class NavMenu extends Component {
     static displayName = NavMenu.name;
@@ -60,18 +61,7 @@ export class NavMenu extends Component {
                                     Корзина
                                 </button>
                             </div>
-
-                        </div>
-                        <div className="menu-header">
-                            <div className="menu-header-category">
-                                <button>Книги</button>
-                                <button>Иностранные</button>
-                                <button>Главное</button>
-                                <button>Школа</button>
-                                <button>Канцтовары</button>
-                                <button>Для детей</button>
-                                <button>Приложения</button>
-                            </div>
+                            <MenuHeader />
                         </div>
                     </Navbar>
                 </div>
