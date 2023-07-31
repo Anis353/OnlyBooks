@@ -1,4 +1,5 @@
-﻿a.navbar-brand {
+﻿
+a.navbar-brand {
     white-space: normal;
     text-align: center;
     word-break: break-all;
@@ -42,6 +43,7 @@ header {
     width: 100%;
     height: 130px;
     background-color: rgb(25, 27, 28);
+    z-index: 2;
 }
 
 .tools-header {

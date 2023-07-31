@@ -3,6 +3,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
+import 'flickity/css/flickity.css';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 import { Helmet } from 'react-helmet';
@@ -14,16 +15,11 @@ const root = createRoot(rootElement);
 
 root.render(
     <BrowserRouter basename={baseUrl}>
-        <Helmet>
-            <link rel="stylesheet" href="/flickity/flickity.css" media="screen" />
-        </Helmet>
-        <LoadScript url="/flickity/flickity.pkgd.min.js" />
+  
     <App />
   </BrowserRouter>);
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://cra.link/PWA
+
 serviceWorkerRegistration.unregister();
 
 // If you want to start measuring performance in your app, pass a function
