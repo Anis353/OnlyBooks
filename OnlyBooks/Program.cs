@@ -1,5 +1,7 @@
-var builder = WebApplication.CreateBuilder(args);
+using OnlyBooks.Models;
 
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<OnlyBooksContext>();
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
