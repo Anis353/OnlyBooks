@@ -22,5 +22,13 @@ namespace OnlyBooks.Controllers
             List<Book> books = _dbContext.Books.ToList();
             return StatusCode(StatusCodes.Status200OK, books);  
         }
+
+        [HttpGet]
+        [Route("GetDiscounts")]
+        public IActionResult GetDiscounts()
+        {
+            List<Discount> discounts = _dbContext.Discounts.ToList();
+            return StatusCode(StatusCodes.Status200OK, discounts);
+        }
     }
 }

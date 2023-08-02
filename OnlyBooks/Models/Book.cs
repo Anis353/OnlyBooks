@@ -33,6 +33,8 @@ public partial class Book
 
     public virtual Author Author { get; set; } = null!;
 
+    public virtual ICollection<Discount> Discounts { get; set; } = new List<Discount>();
+
     public virtual Subject? Subject { get; set; }
 
     public virtual ICollection<Genre> Genres { get; set; } = new List<Genre>();

@@ -1,4 +1,20 @@
 ﻿
-.best-books h3 {
-    margin: 10px 0 20px 0;
+
+
+.main-banners-wrapper {
+    display: flex;
+    margin: 20px 10px 20px 10px;
 }
+
+.discount-books {
+    margin-right: 50px;
+}
+
+.best-books {
+    background-color: #1d1d1d;
+    padding: 0 20px;
+}
+
+    .best-books h3 {
+        margin: 10px 0 30px 0;
+    }

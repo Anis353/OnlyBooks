@@ -23,6 +23,8 @@ public partial class OnlyBooksContext : DbContext
 
     public virtual DbSet<Category> Categories { get; set; }
 
+    public virtual DbSet<Discount> Discounts { get; set; }
+
     public virtual DbSet<Genre> Genres { get; set; }
 
     public virtual DbSet<Order> Orders { get; set; }
@@ -33,7 +35,7 @@ public partial class OnlyBooksContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=Asus-ROG\\SQLEXPRESS;Initial Catalog=OnlyBooks;Trusted_Connection=true; Integrated Security=true; TrustServerCertificate=True");
+        => optionsBuilder.UseSqlServer("Data Source=Asus-ROG\\SQLEXPRESS;Initial Catalog=OnlyBooks;TrustServerCertificate=true;  Integrated Security=true;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -103,6 +105,22 @@ public partial class OnlyBooksContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<Discount>(entity =>
+        {
+            entity.HasKey(e => e.DiscountId).HasName("PK__Discount__E43F6DF607E1A324");
+
+            entity.Property(e => e.DiscountId).HasColumnName("DiscountID");
+            entity.Property(e => e.BookId).HasColumnName("BookID");
+            entity.Property(e => e.DiscountPercentage).HasColumnType("decimal(5, 2)");
+            entity.Property(e => e.EndDate).HasColumnType("date");
+            entity.Property(e => e.StartDate).HasColumnType("date");
+
+            entity.HasOne(d => d.Book).WithMany(p => p.Discounts)
+                .HasForeignKey(d => d.BookId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Discounts__EndDa__4F47C5E3");
         });
 
         modelBuilder.Entity<Genre>(entity =>
