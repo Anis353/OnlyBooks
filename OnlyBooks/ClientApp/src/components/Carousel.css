@@ -1,17 +1,16 @@
 ﻿
 /*Стили для карусели flickity*/
-
 /*Best-books карусель*/
 
 #best-books.gallery {
-    width: 900px;
+    width: 910px;
     position: relative;
 }
 
   .gallery-cell {
     width: 20%;
     height: 250px;
-    margin-right: 50px;
+    margin: 0 50px;
     display: inline-block;
     overflow: hidden; /* Чтобы скрыть выходящую часть изображения */
     position: relative;
@@ -41,7 +40,7 @@
 #best-books .flickity-prev-next-button {
     background: transparent; /* Фон кнопки прозрачным */
     color: #333;
-    transform: translateY(-50%);
+    transform: translateY(-80%);
     line-height: 30px;
     border: none;
 }
@@ -68,19 +67,17 @@
         }
 
 /* Позиция точек прокрутки */
-#best-books .flickity-page-dots {
-    bottom: -22px;
+#best-books button.flickity-page-dot {
+    height: 4px;
+    width: 100px;
+    margin: 0 0 30px 0;
+    border-radius: 0;
+    background-color: #bbbbbb26;
 }
-    /* Точки как линия*/
-    #best-books .flickity-page-dots .dot {
-        height: 4px;
-        width: 40px;
-        margin: 0;
-        border-radius: 0;
-    }
 
 #best-books .flickity-page-dot.is-selected {
-    background: hsl(0deg 0% 70.71%);
+    background: white;
+    border: 1px solid #a1fffe8c;
 }
 
 
@@ -90,7 +87,6 @@
     width: 420px;
     height: 450px;
     position: relative;
-    
 }
 
 #discount-books .gallery-cell {
@@ -125,6 +121,7 @@
 #discount-books .flickity-page-dots {
     bottom: 22px;
 }
+    
     #discount-books .flickity-page-dot.is-selected {
-        background: hsl(0deg 0% 70.71%);
+        background: #ffffff;
     }

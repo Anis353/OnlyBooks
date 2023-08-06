@@ -33,12 +33,18 @@ export function Home() {
                     <div className="discount-books">
                         <Carousel items={books.filter((book) => book.discountPercent !== 0).slice(0, 10)} carouselId="discount-books" autoPlay={true} />
                     </div>
-                <div className="best-books">
-                    <h3>Лучшие книги по рейтингу</h3>
+                 <div className="right-banner">
+                    <div className="best-books">
+                        <h3>Лучшие книги по рейтингу</h3>
                         <Carousel items={books.filter((book) => book.rate > 7).slice(0, 30)} carouselId="best-books" />
+                        </div>
+                        <div className="more_books">
+                            <a href="#">Больше книг по скидкам</a>
+                        </div>
+                 </div>
+                    
                 </div>
-                </div>
-            </div>
+                    </div>
         </div>
     );
 }

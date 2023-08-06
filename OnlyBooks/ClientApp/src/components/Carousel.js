@@ -12,14 +12,17 @@ const Carousel = ({ items, carouselId, autoPlay }) => {
         flickityRef.current = new Flickity(`#${carouselId}`, {
             prevNextButtons: true,
             pageDots: true,
-            freeScroll: true,
+            freeScroll: autoPlay ? false : true,
             initialIndex: 0,
-            cellAlign: 'left',
+            cellAlign: 'center',
             contain: true,
-            groupCells: 1,
+            groupCells: autoPlay ? 1 : 2,
             wrapAround: autoPlay ? true : false,   
             autoPlay: autoPlay ? 5000 : false,
             pauseAutoPlayOnHover: false,
+            selectedAttraction: 0.01,
+            friction: 0.15,
+
         });
     }, [items, carouselId, autoPlay]);
 
