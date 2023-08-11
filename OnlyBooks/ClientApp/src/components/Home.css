@@ -52,3 +52,14 @@
         }
 
 
+.main-content {
+    margin: 50px 0;
+}
+
+ .main-content .hits {
+
+ }
+
+    .main-content .hits h2 {
+        margin-bottom: 30px;
+    }

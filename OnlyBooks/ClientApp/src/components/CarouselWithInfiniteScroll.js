@@ -1,5 +1,4 @@
 ﻿import React, { useEffect, useRef, useState } from 'react';
-import InfiniteScroll from 'react-infinite-scroll-component';
 import Flickity from 'flickity';
 import 'flickity/css/flickity.css';
 import axios from 'axios';
@@ -8,112 +7,112 @@ import "./Carousel.css";
 const CarouselWithInfiniteScroll = ({ carouselId }) => {
     const [books, setBooks] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
+    const [fetching, setFetching] = useState(true);
+    const [loadingMore, setLoadingMore] = useState(false);
     const [hasMore, setHasMore] = useState(true);
-    const [scrollEnabled, setScrollEnabled] = useState(true); // Добавили состояние для разрешения/запрета скролла
-    const carouselRef = useRef(null);
     const flickityInstanceRef = useRef(null);
-    const [hasMoreBooks, setHasMoreBooks] = useState(true);
-
-
-    const fetchBooks = async () => {
-        try {
-            const response = await axios.get(`api/books/GetBooksPagination?_limit=10&_page=${currentPage}`);
-            const newBooks = response.data;
-            setBooks(newBooks); 
-            const totalItems = parseInt(response.headers['x-total-count'], 10);
-            if (currentPage * 10 >= totalItems) {
-                setHasMore(false);
-            } else {
-                setCurrentPage(prevPage => prevPage + 1);
-            }
-            console.log("Loaded books:", newBooks.length);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-            setHasMore(false);
-        }
-    };
 
     useEffect(() => {
-        if (carouselRef.current && books.length > 0) {
-            flickityInstanceRef.current = new Flickity(carouselRef.current, {
-                prevNextButtons: false,
-                pageDots: false,
-                contain: true,
-                cellAlign: 'center'
-            });
+        const fetchData = async () => {
+            if (fetching) {
+                try {
+                    const response = await axios.get(`api/books/GetBooksPagination?_limit=10&_page=${currentPage}`);
+                    const newBooks = response.data;
+                    setBooks(prevBooks => [...prevBooks, ...newBooks]);
+                    setCurrentPage(prevState => prevState + 1);
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                } finally {
+                    setFetching(false);
+                }
+            }
+        };
 
-            return () => {
-                flickityInstanceRef.current.destroy();
-            };
+        fetchData();
+    }, [fetching, currentPage]);
+
+    useEffect(() => {
+        if (books.length > 0) {
+            if (!flickityInstanceRef.current) {
+                flickityInstanceRef.current = new Flickity(`#${carouselId}`, {
+                    prevNextButtons: false,
+                    pageDots: false,
+                    contain: true,
+                    groupCells: 5
+                });
+                flickityInstanceRef.current.on('dragMove', scrollHandler);
+            }
+
+            // Находит новые книги которых нет в карусели
+            const newBooksToAdd = books.filter(newBook =>
+                !Array.from(flickityInstanceRef.current?.getCellElements() || []).some(
+                    cellElement => cellElement.dataset.bookId === newBook.bookId.toString()
+                )
+            );
+
+            // Добавление новых книг
+            if (newBooksToAdd.length > 0) {
+                const newCells = newBooksToAdd.map(newBook => makeCell(newBook));
+                flickityInstanceRef.current.append(newCells);
+            }
         }
     }, [books]);
 
-    const handlePrevClick = () => {
-        fetchBooks();
-    };
 
-    const handleNextClick = () => {
-        if(flickityInstanceRef.current) {
+    function makeCell(book) {
+        const cell = document.createElement('div');
+        cell.className = 'gallery-cell';
+        cell.dataset.bookId = book.bookId; // Set dataset to identify book
+        cell.innerHTML = `<img src="${book.coverImage}" alt="${book.title}" />`;
+
+        return cell;
+    }
+
+    const scrollHandler = () => {
+        if (flickityInstanceRef.current && !loadingMore) {
             const currentSlideIndex = flickityInstanceRef.current.selectedIndex;
             const totalSlides = flickityInstanceRef.current.slides.length;
 
-            if (currentSlideIndex === totalSlides - 2) {
-                if (hasMore) {
-                    fetchBooks();
-                }
-            }
-
-            flickityInstanceRef.current.next();
-        }
-    };
-
-    const handleScroll = (event) => {
-        const carouselContainer = document.getElementById(carouselId);
-
-        if (carouselContainer) {
-            if (!carouselContainer.contains(event.target)) {
-                setScrollEnabled(false); // Запретить бесконечную загрузку
-            } else {
-                setScrollEnabled(true); // Разрешить бесконечную загрузку
+            if (currentSlideIndex === totalSlides - 1) {
+                setLoadingMore(true);
+                setFetching(true);
             }
         }
-    };
-    const handleBookUpdate = (newBooks) => {
-        // Предотвращение автоматического скролла
-        setScrollEnabled(false);
-
-        // Обновление списка книг
-        setBooks(newBooks);
     };
 
     useEffect(() => {
-        window.addEventListener('scroll', handleScroll, true);
+        if (!fetching) {
+            setLoadingMore(false);
+        }
+    }, [fetching]);
 
-        return () => {
-            window.removeEventListener('scroll', handleScroll, true);
-        };
-    }, [carouselId]);
+    const handlePrevClick = () => {
+        if (currentPage > 1) {
+            flickityInstanceRef.current.previous();
+            setHasMore(true);
+        }
+    };
+
+    const handleNextClick = async () => {
+        if (flickityInstanceRef.current && !loadingMore) {
+            const currentSlideIndex = flickityInstanceRef.current.selectedIndex;
+            const totalSlides = flickityInstanceRef.current.slides.length;
+
+            if (currentSlideIndex === totalSlides - 1) {
+                setLoadingMore(true);
+                setFetching(true);
+            }
+
+            setTimeout(() => {
+                flickityInstanceRef.current.next();
+            }, 100); // Задержка прокрутки
+        }
+    };
 
     return (
         <div>
             <div className="carousel-container">
-                <InfiniteScroll
-                    dataLength={books.length}
-                    next={fetchBooks}
-                    hasMore={hasMore && scrollEnabled} // Используем scrollEnabled для разрешения/запрета загрузки
-                    loader={<h4>Loading...</h4>}
-                    endMessage={<p>No more books to load.</p>}
-                    scrollableTarget="carousel-container"
-                >
-                    <div ref={carouselRef} id={carouselId} className="gallery" key={books.length}>
-                        {books.map((book, index) => (
-                            <div key={index} className="gallery-cell">
-                                {/* Ваши данные и структура для каждого элемента */}
-                                <img src={book.coverImage} alt={book.title} />
-                            </div>
-                        ))}
-                    </div>
-                </InfiniteScroll>
+                <div id={carouselId} className="gallery"></div>
             </div>
             <div className="controls">
                 <button onClick={handlePrevClick}>Previous</button>

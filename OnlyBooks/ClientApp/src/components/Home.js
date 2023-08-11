@@ -10,7 +10,7 @@ export function Home() {
     useEffect(() => {
         // Загружаем данные о книгах и скидках с помощью двух запросов fetch
         const fetchData = async () => {
-            const booksResponse = await fetch(`api/books/GetBooks?page=${nextPage}`);
+            const booksResponse = await fetch(`api/books/GetBooks`);
             const booksData = await booksResponse.json();
 
             const discountsResponse = await fetch("api/books/GetDiscounts");
@@ -43,7 +43,6 @@ export function Home() {
                  <div className="right-banner">
                     <div className="best-books">
                             <h4>Лучшие книги по рейтингу</h4>
-                            {console.log(books)}
                         <Carousel items={books.filter((book) => book.rate > 7).slice(0, 30)} carouselId="best-books" />
                         </div>
                         <div className="more_books">
