@@ -70,8 +70,29 @@ const DynamicCarousel = ({ carouselId, filter }) => {
     function makeCell(book) {
         const cell = document.createElement('div');
         cell.className = 'gallery-cell';
-        cell.dataset.bookId = book.bookId; 
-        cell.innerHTML = `<img src="${book.coverImage}" alt="${book.title}" />`;
+        cell.dataset.bookId = book.bookId;
+
+        const bookInfo = document.createElement('div');
+        bookInfo.className = 'book-info';
+
+        const price = document.createElement('span');
+        price.className = "book-price";
+        price.textContent = book.price;
+
+        const img = document.createElement('img');
+        img.src = book.coverImage;
+        img.alt = book.title;
+
+        const titleLink = document.createElement('a');
+        titleLink.href = '#';
+        titleLink.className = 'product-title';
+        titleLink.textContent = book.title;
+
+        
+        bookInfo.appendChild(img);
+        bookInfo.append(price);
+        bookInfo.appendChild(titleLink);
+        cell.appendChild(bookInfo);
 
         return cell;
     }

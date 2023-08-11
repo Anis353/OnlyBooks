@@ -167,27 +167,66 @@
 #hits.gallery {
     width: 100%;
     position: relative;
-    
+    background-color: #232323;
+    border-radius: 7px;
+    padding: 15px;
 }
 
 #hits .gallery-cell {
     width: 15%;
-    height: 250px;
+    font-size: 100px;
     margin: 0 20px;
+    height: 450px;
 }
 
-#hits .gallery-cell img {
-    width: 100%;
-    height: 100%;
-    object-fit: fill;
+    #hits .gallery-cell img {
+        width: 100%;
+        height: 300px;
+        object-fit: fill;
+        border-radius: 8px;
+        border: 1px solid #b0b0b0;
+    }
+
+/* Заполнение информации о книге */
+.book-info {
+    display: flex;
+    flex-direction: column;
 }
+
+    .book-info .product-title {
+        text-align: left;
+        flex-grow: 1;
+        margin-top: 5px;
+        
+    }
+
+    .book-info .book-price {
+        font-size: 18px;
+        text-align: left;
+    }
+
+    .book-info .book-price::after {
+        content: " \20BD";
+    }
+
+    .book-info .product-title {
+        text-decoration: none;
+        font-family: PTSans, Tahoma, sans-serif;
+        font-size: 19px;
+        height: auto;
+        color: white;
+    }
+
+        .book-info .product-title:hover {
+            text-decoration: underline;
+        }
+
 
 
 /* Стили для кнопок карусели */
-
 .controls {
     text-align: right;
-    margin: 0px 20px 30px 0px; 
+    margin: 0px 20px 30px 0px;
 }
 
     .controls button {
@@ -208,3 +247,4 @@
         .controls button img:active {
             width: 38px;
         }
+
