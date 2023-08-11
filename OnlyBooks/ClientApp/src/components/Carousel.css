@@ -182,3 +182,29 @@
     object-fit: fill;
 }
 
+
+/* Стили для кнопок карусели */
+
+.controls {
+    text-align: right;
+    margin: 0px 20px 30px 0px; 
+}
+
+    .controls button {
+        background: transparent;
+        border: 0.5px solid lightgray;
+        border-radius: 5px;
+        padding: 3px;
+    }
+
+    .controls button:hover {
+        background-color: #3384ff;
+    }
+
+        .controls button img {
+            width: 40px;
+        }
+
+        .controls button img:active {
+            width: 38px;
+        }

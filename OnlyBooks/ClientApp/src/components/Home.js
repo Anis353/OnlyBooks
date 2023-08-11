@@ -1,7 +1,8 @@
 import "./Home.css";
 import React, { useEffect, useState } from 'react';
 import Carousel from "./Carousel";
-import InfiniteScroll from './CarouselWithInfiniteScroll';
+import InfiniteScroll from './DynamicCarousel';
+import DynamicCarousel from "./DynamicCarousel";
 
 export function Home() {
     const [books, setBooks] = useState([]);
@@ -54,7 +55,7 @@ export function Home() {
             <div className="main-content">
                 <div className="hits">
                     <h2>Хиты продаж. Распродажа</h2>
-                    <InfiniteScroll carouselId="hits" />
+                    <DynamicCarousel carouselId="hits" filter="book.rate > 8" />
                 </div>
             </div>
         </div>

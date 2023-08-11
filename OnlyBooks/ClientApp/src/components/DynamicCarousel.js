@@ -4,13 +4,15 @@ import 'flickity/css/flickity.css';
 import axios from 'axios';
 import "./Carousel.css";
 
-const CarouselWithInfiniteScroll = ({ carouselId }) => {
+const DynamicCarousel = ({ carouselId, filter }) => {
     const [books, setBooks] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [fetching, setFetching] = useState(true);
     const [loadingMore, setLoadingMore] = useState(false);
-    const [hasMore, setHasMore] = useState(true);
     const flickityInstanceRef = useRef(null);
+
+    // Условие фильтрации
+    const filterFunction = new Function('book', `return ${filter};`);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -21,7 +23,7 @@ const CarouselWithInfiniteScroll = ({ carouselId }) => {
                     setBooks(prevBooks => [...prevBooks, ...newBooks]);
                     setCurrentPage(prevState => prevState + 1);
                 } catch (error) {
-                    console.error('Error fetching data:', error);
+                    console.error('Ошибка загрузки данных: ', error);
                 } finally {
                     setFetching(false);
                 }
@@ -38,9 +40,14 @@ const CarouselWithInfiniteScroll = ({ carouselId }) => {
                     prevNextButtons: false,
                     pageDots: false,
                     contain: true,
-                    groupCells: 5
+                    groupCells: 4,
+                    pauseAutoPlayOnHover: false,
+                    draggable: false,
+                    freeScroll: true,
+                    cellAlign: 'left',
+                    selectedAttraction: 0.02,
+                    friction: 0.15,
                 });
-                flickityInstanceRef.current.on('dragMove', scrollHandler);
             }
 
             // Находит новые книги которых нет в карусели
@@ -50,35 +57,24 @@ const CarouselWithInfiniteScroll = ({ carouselId }) => {
                 )
             );
 
+            const filteredNewBooksToAdd = newBooksToAdd.filter(filterFunction);
+
             // Добавление новых книг
-            if (newBooksToAdd.length > 0) {
-                const newCells = newBooksToAdd.map(newBook => makeCell(newBook));
+            if (filteredNewBooksToAdd.length > 0) {
+                const newCells = filteredNewBooksToAdd.map(newBook => makeCell(newBook));
                 flickityInstanceRef.current.append(newCells);
             }
         }
-    }, [books]);
-
+    }, [books, filterFunction]);
 
     function makeCell(book) {
         const cell = document.createElement('div');
         cell.className = 'gallery-cell';
-        cell.dataset.bookId = book.bookId; // Set dataset to identify book
+        cell.dataset.bookId = book.bookId; 
         cell.innerHTML = `<img src="${book.coverImage}" alt="${book.title}" />`;
 
         return cell;
     }
-
-    const scrollHandler = () => {
-        if (flickityInstanceRef.current && !loadingMore) {
-            const currentSlideIndex = flickityInstanceRef.current.selectedIndex;
-            const totalSlides = flickityInstanceRef.current.slides.length;
-
-            if (currentSlideIndex === totalSlides - 1) {
-                setLoadingMore(true);
-                setFetching(true);
-            }
-        }
-    };
 
     useEffect(() => {
         if (!fetching) {
@@ -89,7 +85,6 @@ const CarouselWithInfiniteScroll = ({ carouselId }) => {
     const handlePrevClick = () => {
         if (currentPage > 1) {
             flickityInstanceRef.current.previous();
-            setHasMore(true);
         }
     };
 
@@ -98,7 +93,7 @@ const CarouselWithInfiniteScroll = ({ carouselId }) => {
             const currentSlideIndex = flickityInstanceRef.current.selectedIndex;
             const totalSlides = flickityInstanceRef.current.slides.length;
 
-            if (currentSlideIndex === totalSlides - 1) {
+            if (currentSlideIndex === totalSlides - 2) {
                 setLoadingMore(true);
                 setFetching(true);
             }
@@ -110,16 +105,14 @@ const CarouselWithInfiniteScroll = ({ carouselId }) => {
     };
 
     return (
-        <div>
-            <div className="carousel-container">
-                <div id={carouselId} className="gallery"></div>
-            </div>
+        <div className="dynamic-carousel">
             <div className="controls">
-                <button onClick={handlePrevClick}>Previous</button>
-                <button onClick={handleNextClick} disabled={!hasMore}>Next</button>
+                <button onClick={handlePrevClick}><img src="/images/icons/icon-left.png" alt="влево" /></button>
+                <button onClick={handleNextClick}><img src="/images/icons/icon-right.png" alt="вправо" /></button>
             </div>
+                <div id={carouselId} className="gallery"></div>
         </div>
     );
 };
 
-export default CarouselWithInfiniteScroll;
+export default DynamicCarousel;
