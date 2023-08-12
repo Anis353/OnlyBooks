@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Carousel from "./Carousel";
 import InfiniteScroll from './DynamicCarousel';
 import DynamicCarousel from "./DynamicCarousel";
+import { Fade } from "react-awesome-reveal";
 export function Home() {
     const [books, setBooks] = useState([]);
     const[nextPage, setNextPage] = useState(1);
@@ -35,6 +36,7 @@ export function Home() {
 
     return (
         <div className="wrapper">
+            <Fade>
             <div className="top-content">
                 <div className="main-banners-wrapper">
                     <div className="discount-books">
@@ -50,15 +52,17 @@ export function Home() {
                         </div>
                     </div>
                  </div>
-            </div>
+                </div>
+                </Fade>
             
             <div className="main-content">
                 <div className="hits">
-                    <h2>Хиты продаж. Распродажа</h2>
-                    <DynamicCarousel carouselId="hits" filter="book.rate > 8" />
-                    </div>
+                    <Fade>
+                        <h2>Хиты продаж. Распродажа</h2>
+                        <DynamicCarousel carouselId="hits" filter="book.rate > 8" />
+                    </Fade>
                 </div>
-           
+                </div>
         </div>
     );
 }
