@@ -1,38 +1,20 @@
 import "./Home.css";
 import React, { useEffect, useState } from 'react';
+import { fetchBooksAndDiscounts } from "./api.js";
 import Carousel from "./Carousel";
-import InfiniteScroll from './DynamicCarousel';
 import DynamicCarousel from "./DynamicCarousel";
 import { Fade } from "react-awesome-reveal";
 export function Home() {
     const [books, setBooks] = useState([]);
-    const[nextPage, setNextPage] = useState(1);
 
     useEffect(() => {
-        // Загружаем данные о книгах и скидках с помощью двух запросов fetch
         const fetchData = async () => {
-            const booksResponse = await fetch(`api/books/GetBooks`);
-            const booksData = await booksResponse.json();
-
-            const discountsResponse = await fetch("api/books/GetDiscounts");
-            const discountsData = await discountsResponse.json();
-
-            // Объединяем данные о книгах и скидках по ID книги
-            const booksWithDiscounts = booksData.map((book) => {
-                const discountInfo = discountsData.find((discount) => discount.bookId === book.bookId);
-                return { ...book, discount: discountInfo ? discountInfo.discountPercentage : 0 };
-            });
-
+            const booksWithDiscounts = await fetchBooksAndDiscounts();
             setBooks(booksWithDiscounts);
         };
 
         fetchData();
     }, []);
-
-    const loadMoreBooks = () => {
-        setNextPage((prevPage) => prevPage + 1);
-    };
-
 
     return (
         <div className="wrapper">
@@ -54,7 +36,6 @@ export function Home() {
                  </div>
                 </div>
                 </Fade>
-            
             <div className="main-content">
                 <div className="hits">
                     <Fade>

@@ -1,10 +1,12 @@
-﻿
-/*Стили для карусели flickity*/
+﻿/*Стили для карусели flickity*/
+
 /*Best-books карусель*/
+#best-books {
+    position: relative;
+}
 
 #best-books.gallery {
     width: 910px;
-    position: relative;
 }
 
   .gallery-cell {
@@ -74,23 +76,30 @@
         }
 
 /* Позиция точек прокрутки */
+#best-books .flickity-page-dots {
+    display: flex;
+    justify-content: center;
+}
+
 #best-books button.flickity-page-dot {
+    visibility: hidden;
+    flex-grow: 1;
+    justify-content: center;
     height: 4px;
-    width: 7%;
-    margin: 0 0 30px 0;
+    margin: 0 0px 30px 0;
     border-radius: 0.2px;
     background-color: #bbbbbb26;
 }
 
 #best-books .flickity-page-dot.is-selected {
+     visibility: visible;
     background: white;
     border: 1px solid #a1fffe8c;
 }
 
-
 /*Big banner карусель*/
 
-#discount-books.gallery {
+    #discount-books.gallery {
     width: 420px;
     height: 450px;
     position: relative;
@@ -149,6 +158,26 @@
     transition: opacity 0.3s ease, transform 0.3s ease; /* Плавные переходы */
 }
 
+.price-container .discount-label {
+    background-color: red;
+    color: white;
+    padding: 0px 8px;
+    border-radius: 10px 5px;
+    font-size: 15px;
+    width: 50px;
+    margin-top: 5px;
+}
+
+.discount-info {
+    display: flex;
+}
+
+.days-left-label {
+    margin: 8px 0px 0px 10px;
+    font-family: 'Poppins', sans-serif;
+    text-transform: uppercase;
+    font-size: 12px;
+}
 
 /* Размер скидки, если есть скидка */
 .discount-books .discount-label {
@@ -161,7 +190,6 @@
     border-radius: 7px;
     font-size: 20px;
     transform: rotate(20deg);
-   
 }
 
 #hits.gallery {
@@ -177,10 +205,9 @@
     width: 15%;
     margin: 0 20px;
     height: 600px;
-    
 }
 
-    #hits .gallery-cell img {
+    #hits .gallery-cell > img {
         width: 100%;
         height: 300px;
         object-fit: fill;
@@ -192,7 +219,6 @@
 .book-info {
     display: flex;
     flex-direction: column;
-   
 }
 
     .book-info .product-title {
@@ -201,15 +227,31 @@
         margin-top: 5px;
     }
 
-    .book-info .book-price {
-        font: bold 18px arial;
-        text-align: left;
-        margin-top: 15px;
+    .book-info .price-container {
+        margin-top: 5px;
     }
 
-    .book-info .book-price::after {
-        content: " \20BD";
+    .book-info .book-price {
+        font: 19px "PTSans", "Tahoma", sans-serif;
+        text-align: left;
+        color: black;
+        border: 0.5px solid black;
+        background-color: white;
+        padding: 0 2px;
     }
+        .book-info .book-price::after {
+            content: " \20BD";
+        }
+
+    .book-info .original-price {
+        font: 18px "PTSans", "Tahoma", sans-serif;
+        text-decoration: line-through;
+        margin-left: 8px;
+    }
+        /* Скрыть символ рубля после перечеркнутой цены */
+        .book-info .original-price::after {
+            content: none; 
+        }
 
     .book-info .product-title {
         text-decoration: none;
@@ -248,3 +290,36 @@
             width: 38px;
         }
 
+/* Корзина и отложить */
+.product-buy {
+    margin-top: 10px;
+}
+
+    .product-buy .basket-button {
+        background: none;
+        color: white;
+        font-size: 14px;
+        outline: 1px solid white;
+        padding: 0 10px;
+    }
+
+        .product-buy .basket-button:hover {
+            background: rgb(255,42,0);
+            background: linear-gradient(357deg, rgba(255,42,0,1) 0%, rgba(255,166,0,1) 100%);
+            outline: none;
+        }
+
+    .product-buy .postpone-button  {
+        margin-left: 10px;
+        background: none;
+        border: none;
+    }
+
+        .product-buy .postpone-button img {
+            width: 30px;
+        }
+
+        .product-buy .postpone-button:hover {
+            filter: brightness(0) invert(1);
+        }
+     

@@ -14,15 +14,14 @@ const Carousel = ({ items, carouselId, autoPlay }) => {
             pageDots: true,
             freeScroll: autoPlay ? false : true,
             initialIndex: 0,
-            cellAlign: 'center',
+            cellAlign: 'left',
             contain: true,
-            groupCells: autoPlay ? 1 : 2,
+            groupCells: 1,
             wrapAround: autoPlay ? true : false,   
             autoPlay: autoPlay ? 5000 : false,
             pauseAutoPlayOnHover: false,
             selectedAttraction: 0.01,
             friction: 0.15,
-
         });
     }, [items, carouselId, autoPlay]);
 
