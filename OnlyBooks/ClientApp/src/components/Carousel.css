@@ -5,11 +5,11 @@
     position: relative;
 }
 
-#best-books.gallery {
-    width: 910px;
-}
+    #best-books.gallery-banner {
+        width: 910px;
+    }
 
-  .gallery-cell {
+  .gallery-cell-banner {
     width: 20%;
     height: 250px;
     margin: 0 50px;
@@ -18,32 +18,32 @@
     position: relative;
 }
 
-    #best-books .gallery-cell img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transform: translateY(30px); /* Сместите изображение вниз на 30 пикселей по умолчанию */
-        transition: transform 0.3s ease;
-    }
+#best-books .gallery-cell-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: translateY(30px); /* Сместите изображение вниз на 30 пикселей по умолчанию */
+    transition: transform 0.3s ease;
+}
 
         /* Показываем элемент скидки при наведении на книгу */
-        #best-books .gallery-cell:hover .discount-label {
-        opacity: 1;
-        transform: translateY(0);
-        }
+#best-books .gallery-cell-banner:hover .discount-label {
+    opacity: 1;
+    transform: translateY(0);
+}
 
 
-    #best-books .gallery-cell:hover img {
-        transform: translateY(0); /* Уберите смещение при наведении */
-    }
+#best-books .gallery-cell-banner:hover img {
+    transform: translateY(0); /* Уберите смещение при наведении */
+}
 
-    #best-books .gallery-cell:before {
-        display: block;
-        text-align: center;
-        line-height: 200px;
-        font-size: 80px;
-        color: white;
-    }
+#best-books .gallery-cell-banner:before {
+    display: block;
+    text-align: center;
+    line-height: 200px;
+    font-size: 80px;
+    color: white;
+}
 
 /* Стили для кнопок влево и вправо */
 #best-books .flickity-prev-next-button {
@@ -99,19 +99,19 @@
 
 /*Big banner карусель*/
 
-    #discount-books.gallery {
+#discount-books.gallery-banner {
     width: 420px;
     height: 450px;
     position: relative;
 }
 
-#discount-books .gallery-cell {
+#discount-books .gallery-cell-banner {
     width: 100%;
     height: 100%;
     display: inline-block;
 }
 
-    #discount-books .gallery-cell img {
+    #discount-books .gallery-cell-banner img {
         width: 100%;
         height: 100%;
         object-fit: fill;
@@ -120,8 +120,8 @@
         background-color: hsl(0 0% 10%);
     }
 
-    #discount-books .gallery-cell:hover img {
-        transform: translateY(0);   /* Cмещение при наведении */
+    #discount-books .gallery-cell-banner:hover img {
+        transform: translateY(0); /* Cмещение при наведении */
     }
 
 #discount-books .flickity-prev-next-button.previous,
@@ -192,7 +192,7 @@
     transform: rotate(20deg);
 }
 
-#hits.gallery {
+.gallery {
     width: 100%;
     position: relative;
     background-color: #232323;
@@ -201,19 +201,11 @@
     padding: 10px 10px;
 }
 
-#hits .gallery-cell {
+.gallery-cell {
     width: 15%;
     margin: 0 20px;
     height: 600px;
 }
-
-    #hits .gallery-cell > img {
-        width: 100%;
-        height: 300px;
-        object-fit: fill;
-        border-radius: 8px;
-        border: 1px solid #b0b0b0;
-    }
 
 /* Заполнение информации о книге */
 .book-info {
@@ -221,49 +213,47 @@
     flex-direction: column;
 }
 
-    .book-info .product-title {
-        text-align: left;
-        flex-grow: 1;
-        margin-top: 5px;
-    }
+.book-info .product-title {
+    text-align: left;
+    flex-grow: 1;
+    margin-top: 5px;
+    text-decoration: none;
+    font-family: PTSans, Tahoma, sans-serif;
+    font-size: 19px;
+    height: auto;
+    color: white;
+}
 
-    .book-info .price-container {
-        margin-top: 5px;
-    }
+.book-info .product-title:hover {
+    text-decoration: underline;
+}
 
-    .book-info .book-price {
-        font: 19px "PTSans", "Tahoma", sans-serif;
-        text-align: left;
-        color: black;
-        border: 0.5px solid black;
-        background-color: white;
-        padding: 0 2px;
-    }
-        .book-info .book-price::after {
-            content: " \20BD";
-        }
+.book-info .price-container {
+    margin-top: 5px;
+}
 
-    .book-info .original-price {
-        font: 18px "PTSans", "Tahoma", sans-serif;
-        text-decoration: line-through;
-        margin-left: 8px;
-    }
-        /* Скрыть символ рубля после перечеркнутой цены */
-        .book-info .original-price::after {
-            content: none; 
-        }
+.book-info .book-price {
+    font: 19px "PTSans", "Tahoma", sans-serif;
+    text-align: left;
+    color: black;
+    border: 0.5px solid black;
+    background-color: white;
+    padding: 0 2px;
+}
 
-    .book-info .product-title {
-        text-decoration: none;
-        font-family: PTSans, Tahoma, sans-serif;
-        font-size: 19px;
-        height: auto;
-        color: white;
-    }
+.book-info .book-price::after {
+    content: " \20BD";
+}
 
-        .book-info .product-title:hover {
-            text-decoration: underline;
-        }
+.book-info .original-price {
+    font: 18px "PTSans", "Tahoma", sans-serif;
+    text-decoration: line-through;
+    margin-left: 8px;
+}
+
+.book-info .original-price::after {
+    content: none;
+}
 
 /* Стили для кнопок карусели */
 .controls {
@@ -271,55 +261,53 @@
     margin: 0px 20px 10px 0px;
 }
 
-    .controls button {
-        background: transparent;
-        border: 0.5px solid lightgray;
-        border-radius: 5px;
-        padding: 3px;
-    }
+.controls button {
+    background: transparent;
+    border: 0.5px solid lightgray;
+    border-radius: 5px;
+    padding: 3px;
+}
 
-    .controls button:hover {
-        background-color: #3384ff;
-    }
+.controls button:hover {
+    background-color: #3384ff;
+}
 
-        .controls button img {
-            width: 40px;
-        }
+.controls button img {
+    width: 40px;
+}
 
-        .controls button img:active {
-            width: 38px;
-        }
+.controls button img:active {
+    width: 38px;
+}
 
 /* Корзина и отложить */
 .product-buy {
     margin-top: 10px;
 }
 
-    .product-buy .basket-button {
-        background: none;
-        color: white;
-        font-size: 14px;
-        outline: 1px solid white;
-        padding: 0 10px;
-    }
+.product-buy .basket-button {
+    background: none;
+    color: white;
+    font-size: 14px;
+    outline: 1px solid white;
+    padding: 0 10px;
+}
 
-        .product-buy .basket-button:hover {
-            background: rgb(255,42,0);
-            background: linear-gradient(357deg, rgba(255,42,0,1) 0%, rgba(255,166,0,1) 100%);
-            outline: none;
-        }
+.product-buy .basket-button:hover {
+    background: linear-gradient(357deg, rgba(255,42,0,1) 0%, rgba(255,166,0,1) 100%);
+    outline: none;
+}
 
-    .product-buy .postpone-button  {
-        margin-left: 10px;
-        background: none;
-        border: none;
-    }
+.product-buy .postpone-button {
+    margin-left: 10px;
+    background: none;
+    border: none;
+}
 
-        .product-buy .postpone-button img {
-            width: 30px;
-        }
+.product-buy .postpone-button img {
+    width: 30px;
+}
 
-        .product-buy .postpone-button:hover {
-            filter: brightness(0) invert(1);
-        }
-     
+.product-buy .postpone-button:hover {
+    filter: brightness(0) invert(1);
+}

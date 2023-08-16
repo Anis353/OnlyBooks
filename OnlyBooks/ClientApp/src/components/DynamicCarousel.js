@@ -14,15 +14,29 @@ const DynamicCarousel = ({ carouselId, filter }) => {
     const flickityInstanceRef = useRef(null);
     const [discounts, setDiscounts] = useState([]);
 
-    // Условие фильтрации
-    const filterFunction = new Function('book', `return ${filter};`);
+    //// Условие фильтрации
+    //const filterFunction = new Function('book', `return ${filter};`);
   
     useEffect(() => {
         const fetchData = async () => {
             if (fetching) {
                 try {
-                    const response = await axios.get(`api/books/GetBooksPagination?_limit=10&_page=${currentPage}`);
-                    const newBooks = response.data;
+                    let filterParams = '';
+
+                    if (/[<>]/.test(filter)) {
+                        filterParams = filter;
+                        filter = null;
+                    }
+
+                    const response = await axios.get(`api/books/GetBooksPagination?_limit=10&_page=${currentPage}&${filter}`);
+                    let newBooks = response.data;
+
+                    if (filterParams != '') {
+                        console.log(filterParams);
+                        const filterFunction = new Function('book', `return ${filterParams};`);
+                        newBooks = newBooks.filter(book => filterFunction(book));
+                    }
+                  
                     setBooks(prevBooks => [...prevBooks, ...newBooks]);
                     setCurrentPage(prevState => prevState + 1);
                 } catch (error) {
@@ -34,7 +48,7 @@ const DynamicCarousel = ({ carouselId, filter }) => {
         };
 
         fetchData();
-    }, [fetching, currentPage]);
+    }, [fetching, currentPage, filter]);
 
     useEffect(() => {
         if (books.length > 0) {
@@ -59,14 +73,15 @@ const DynamicCarousel = ({ carouselId, filter }) => {
                     cellElement => cellElement.dataset.bookId === newBook.bookId.toString()
                 )
             );
-            const filteredNewBooksToAdd = newBooksToAdd.filter(filterFunction);
+            /* const filteredNewBooksToAdd = newBooksToAdd.filter(filterFunction);*/
+
             // Добавление новых книг
-            if (filteredNewBooksToAdd.length > 0) {
-                const newCells = filteredNewBooksToAdd.map(newBook => makeCell(newBook));
+            if (newBooksToAdd.length > 0) {
+                const newCells = newBooksToAdd.map(newBook => makeCell(newBook));
                 flickityInstanceRef.current.append(newCells);
             }
         }
-    }, [books, filterFunction]);
+    }, [books]);
 
     useEffect(() => {
         const fetchData = async () => {

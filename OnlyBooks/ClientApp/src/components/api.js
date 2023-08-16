@@ -21,3 +21,4 @@ export async function fetchDiscounts() {
 
     return discountsData;
 }
+

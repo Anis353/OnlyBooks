@@ -51,7 +51,6 @@ public partial class OnlyBooksContext : DbContext
         modelBuilder.Entity<Book>(entity =>
         {
             entity.Property(e => e.BookId).HasColumnName("BookID");
-            entity.Property(e => e.AuthorId).HasColumnName("AuthorID");
             entity.Property(e => e.CoverImage).HasMaxLength(100);
             entity.Property(e => e.Isbn)
                 .HasMaxLength(50)
@@ -62,14 +61,28 @@ public partial class OnlyBooksContext : DbContext
             entity.Property(e => e.SubjectId).HasColumnName("SubjectID");
             entity.Property(e => e.Title).HasMaxLength(100);
 
-            entity.HasOne(d => d.Author).WithMany(p => p.Books)
-                .HasForeignKey(d => d.AuthorId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Books_Authors");
-
             entity.HasOne(d => d.Subject).WithMany(p => p.Books)
                 .HasForeignKey(d => d.SubjectId)
                 .HasConstraintName("FK_Books_Subjects");
+
+            entity.HasMany(d => d.Authors).WithMany(p => p.Books)
+                .UsingEntity<Dictionary<string, object>>(
+                    "BookAuthor",
+                    r => r.HasOne<Author>().WithMany()
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK__BookAutho__Autho__7FEAFD3E"),
+                    l => l.HasOne<Book>().WithMany()
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK__BookAutho__BookI__7EF6D905"),
+                    j =>
+                    {
+                        j.HasKey("BookId", "AuthorId").HasName("PK__BookAuth__6AED6DE62905CEB5");
+                        j.ToTable("BookAuthors");
+                        j.IndexerProperty<int>("BookId").HasColumnName("BookID");
+                        j.IndexerProperty<int>("AuthorId").HasColumnName("AuthorID");
+                    });
 
             entity.HasMany(d => d.Genres).WithMany(p => p.Books)
                 .UsingEntity<Dictionary<string, object>>(
@@ -151,15 +164,9 @@ public partial class OnlyBooksContext : DbContext
         modelBuilder.Entity<Subject>(entity =>
         {
             entity.Property(e => e.SubjectId).HasColumnName("SubjectID");
-            entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
             entity.Property(e => e.Name)
                 .HasMaxLength(50)
                 .IsUnicode(false);
-
-            entity.HasOne(d => d.Category).WithMany(p => p.Subjects)
-                .HasForeignKey(d => d.CategoryId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Subjects_Categories");
         });
 
         modelBuilder.Entity<User>(entity =>

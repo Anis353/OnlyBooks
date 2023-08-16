@@ -39,8 +39,18 @@ export function Home() {
             <div className="main-content">
                 <div className="hits">
                     <Fade>
+                        <div className="bestseller-block">
                         <h2>Хиты продаж. Распродажа</h2>
-                        <DynamicCarousel carouselId="hits" filter="book.rate > 8" />
+                            <DynamicCarousel carouselId="bestseller" filter="book.rate >= 7" />
+                        </div>
+                        <div className="english-course-block">
+                        <h2>Английские учебные курсы. Распродажа</h2>
+                            <DynamicCarousel carouselId="english-course" filter="categoryId=50" />
+                        </div>
+                        <div className="manga-comics-block">
+                            <h2>Манга и комиксы</h2>
+                            <DynamicCarousel carouselId="manga-comics" filter="categoryId=47" />
+                        </div>
                     </Fade>
                 </div>
                 </div>

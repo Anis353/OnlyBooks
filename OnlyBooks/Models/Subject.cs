@@ -9,9 +9,5 @@ public partial class Subject
 
     public string Name { get; set; } = null!;
 
-    public int CategoryId { get; set; }
-
     public virtual ICollection<Book> Books { get; set; } = new List<Book>();
-
-    public virtual Category Category { get; set; } = null!;
 }

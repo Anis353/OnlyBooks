@@ -34,21 +34,3 @@ export default function App() {
     );
 }
 
-function getDaysDeclension(days) {
-    const lastDigit = days % 10;
-    const secondToLastDigit = Math.floor(days / 10) % 10;
-
-    if (secondToLastDigit === 1) {
-        return 'дней';
-    }
-
-    if (lastDigit === 1) {
-        return 'день';
-    }
-
-    if (lastDigit >= 2 && lastDigit <= 4) {
-        return 'дня';
-    }
-
-    return 'дней';
-}

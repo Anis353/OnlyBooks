@@ -9,8 +9,6 @@ public partial class Book
 
     public string Title { get; set; } = null!;
 
-    public int AuthorId { get; set; }
-
     public decimal Price { get; set; }
 
     public string Description { get; set; } = null!;
@@ -31,11 +29,11 @@ public partial class Book
 
     public double? Rate { get; set; }
 
-    public virtual Author Author { get; set; } = null!;
-
     public virtual ICollection<Discount> Discounts { get; set; } = new List<Discount>();
 
     public virtual Subject? Subject { get; set; }
+
+    public virtual ICollection<Author> Authors { get; set; } = new List<Author>();
 
     public virtual ICollection<Genre> Genres { get; set; } = new List<Genre>();
 }

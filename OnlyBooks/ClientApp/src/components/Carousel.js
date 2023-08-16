@@ -20,15 +20,15 @@ const Carousel = ({ items, carouselId, autoPlay }) => {
             wrapAround: autoPlay ? true : false,   
             autoPlay: autoPlay ? 5000 : false,
             pauseAutoPlayOnHover: false,
-            selectedAttraction: 0.01,
-            friction: 0.15,
+            selectedAttraction: 0.05,
+            friction: 0.30,
         });
     }, [items, carouselId, autoPlay]);
 
     return (
-        <div id={carouselId} className="gallery js-flickity">
+        <div id={carouselId} className="gallery-banner js-flickity">
             {items.map((item) => (
-                <a key={item.bookId} className="gallery-cell" href={`/book/${item.bookId}`}>
+                <a key={item.bookId} className="gallery-cell-banner" href={`/book/${item.bookId}`}>
                     <img src={item.coverImage} alt={item.title} />
                     {item.discount > 0 && ( // Показываем элемент скидки только если есть скидка
                         <div className="discount-label">
