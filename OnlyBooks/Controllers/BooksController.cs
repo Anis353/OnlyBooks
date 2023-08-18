@@ -31,7 +31,7 @@ namespace OnlyBooks.Controllers
 
         [HttpGet]
         [Route("GetBooksPagination")]
-        public IActionResult GetBooksPagination(int? subjectId, int? categoryId, int? minRate, int? _page, int? _limit)
+        public IActionResult GetBooksPagination(int? subjectId, int? subjectMin, int? categoryId, int? minRate, int? year, int? _page, int? _limit)
         {
             int pageNumber = _page ?? 1;
             int pageSize = _limit ?? 10;
@@ -42,6 +42,11 @@ namespace OnlyBooks.Controllers
             if (subjectId.HasValue)
             {
                 booksQuery = booksQuery.Where(b => b.SubjectId == subjectId);
+            }
+
+            if (subjectMin.HasValue)
+            {
+                booksQuery = booksQuery.Where(b => b.SubjectId >= subjectMin);
             }
 
             // Применяем фильтр по категории (categoryId)
@@ -59,6 +64,11 @@ namespace OnlyBooks.Controllers
             if (minRate.HasValue)
             {
                 booksQuery = booksQuery.Where(b => b.Rate >= minRate);
+            }
+
+            if (year.HasValue)
+            {
+                booksQuery = booksQuery.Where(b => b.PublicationYear == year);
             }
 
             List<Book> books = booksQuery

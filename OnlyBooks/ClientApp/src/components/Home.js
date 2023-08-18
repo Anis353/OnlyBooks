@@ -47,9 +47,17 @@ export function Home() {
                         <h2>Английские учебные курсы. Распродажа</h2>
                             <DynamicCarousel carouselId="english-course" filter="categoryId=50" />
                         </div>
+                        <div className="school-books-block">
+                            <h2>Книги для школы</h2>
+                            <DynamicCarousel carouselId="school-books" filter="categoryId=52" />
+                        </div>
                         <div className="manga-comics-block">
                             <h2>Манга и комиксы</h2>
                             <DynamicCarousel carouselId="manga-comics" filter="categoryId=47" />
+                        </div>
+                        <div className="new-books-block">
+                            <h2>Книги: новинки 2023</h2>
+                            <DynamicCarousel carouselId="new-books" filter="year=2023" />
                         </div>
                     </Fade>
                 </div>
