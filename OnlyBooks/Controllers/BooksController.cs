@@ -19,7 +19,6 @@ namespace OnlyBooks.Controllers
             _dbContext = dbContext; 
         }
 
-
         [HttpGet]
         [Route("GetBooks")]
         public IActionResult GetBooks()
@@ -28,6 +27,13 @@ namespace OnlyBooks.Controllers
             return StatusCode(StatusCodes.Status200OK, books);
         }
 
+        [HttpGet]
+        [Route("GetBookById")]
+        public IActionResult GetBookById(int? bookId)
+        {
+            var book = _dbContext.Books.FirstOrDefault(b => b.BookId == bookId);
+            return StatusCode(StatusCodes.Status200OK, book);
+        }
 
         [HttpGet]
         [Route("GetBooksPagination")]
@@ -87,6 +93,13 @@ namespace OnlyBooks.Controllers
             return StatusCode(StatusCodes.Status200OK, discounts);
         }
 
+        [HttpGet]
+        [Route("GetDiscountById")]
+        public IActionResult GetDiscountById(int? bookId)
+        {
+            var discount = _dbContext.Discounts.FirstOrDefault(d => d.BookId == bookId);
+            return StatusCode(StatusCodes.Status200OK, discount);
+        }
 
         // Получить автора по bookId
         [HttpGet]
@@ -111,6 +124,33 @@ namespace OnlyBooks.Controllers
             });
 
             return StatusCode(StatusCodes.Status200OK, authors);
+        }
+
+
+        [HttpGet]
+        [Route("GetCategoryById")]
+        public IActionResult GetCategoryById(int? bookId)
+        {
+            if (bookId == null)
+            {
+                return BadRequest("Книга не найдена");
+            }
+
+            var bookCategories = _dbContext.BookCategories
+                .Where(bc => bc.BookId == bookId)
+                .Select(bc => bc.CategoryId)
+                .ToList();
+
+            if (bookCategories.Count == 0)
+            {
+                return NotFound("Категорий не найдено");
+            }
+
+            var categories = _dbContext.Categories
+            .Where(c => bookCategories.Contains(c.CategoryId))
+            .ToList();
+
+            return StatusCode(StatusCodes.Status200OK, categories);
         }
 
     }

@@ -1,36 +1,23 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import AppRoutes from './AppRoutes';
-import { Layout } from './components/Layout';
-import Loader from './components/Loader'; // Импортируйте компонент Loader
+import  Layout  from './components/Layout';
 import './custom.css';
 
 export default function App() {
-    const [isLoading, setIsLoading] = useState(true); 
-
-    useEffect(() => {
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 500);
-    }, []);
 
     //window.onload = () => {
-    //    setIsLoading(false);
     //};
 
     return (
-        <Layout>
-            {isLoading ? (
-                <Loader /> 
-            ) : (
-                <Routes>
-                    {AppRoutes.map((route, index) => {
-                        const { element, ...rest } = route;
-                        return <Route key={index} {...rest} element={element} />;
-                    })}
-                </Routes>
-            )}
-        </Layout>
+    <Layout>
+        <Routes>
+            {AppRoutes.map((route, index) => {
+                const { element, ...rest } = route;
+                return <Route key={index} {...rest} element={element} />;
+            })}
+        </Routes>
+            </Layout>
     );
 }
 

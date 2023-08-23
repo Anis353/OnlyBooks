@@ -1,0 +1,18 @@
+﻿.book-info { margin-top: 30px;}
+
+.book-details {
+    display: flex;
+    margin-top: 30px;
+}
+
+.book-details-cover {
+    margin-right: 30px;
+}
+
+    .book-details-cover img {
+        max-width: 100%; /* Сделать картинку респонсивной */
+    }
+
+.book-details-info {
+    flex: 1; /* Занимает две единицы по горизонтали */
+}

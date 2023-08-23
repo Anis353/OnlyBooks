@@ -1,18 +1,16 @@
 import { Home } from "./components/Home";
+import BookDetailsPage from './components/BookDetailsPage';
 
 const AppRoutes = [
   {
     index: true,
     element: <Home />
-  }
-  //{
-  //  path: '/counter',
-  //  element: <Counter />
-  //},
-  //{
-  //  path: '/fetch-data',
-  //  element: <FetchData />
-  //}
+  },
+  {
+      path: '/book/:id',
+      element: <BookDetailsPage />
+  },
+
 ];
 
 export default AppRoutes;

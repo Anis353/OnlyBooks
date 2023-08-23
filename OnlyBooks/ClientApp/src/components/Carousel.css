@@ -255,6 +255,14 @@
     content: none;
 }
 
+/* ссылка при нажатии на картинку */
+.image-link {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+
 /* Стили для кнопок карусели */
 .controls {
     text-align: right;

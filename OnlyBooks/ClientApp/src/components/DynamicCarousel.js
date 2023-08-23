@@ -35,7 +35,6 @@ const DynamicCarousel = ({ carouselId, filter }) => {
                     setDiscounts(booksWithDiscounts);
 
                     if (filterParams != '') {
-                        console.log(filterParams);
                         const filterFunction = new Function('book', `return ${filterParams};`);
                         newBooks = newBooks.filter(book => filterFunction(book));
                     }
@@ -179,12 +178,19 @@ const DynamicCarousel = ({ carouselId, filter }) => {
         priceContainer.appendChild(price);
     }
 
+         const ref = document.createElement('a');
+         ref.href = `book/${book.bookId}`;
+
+        // Картинка книги
         const img = document.createElement('img');
         img.src = book.coverImage;
         img.alt = book.title;
+        img.className = 'image-link';
+
+         ref.appendChild(img);
 
         const titleLink = document.createElement('a');
-        titleLink.href = '#';
+        titleLink.href = `book/${book.bookId}`;
         titleLink.className = 'product-title';
         titleLink.textContent = book.title;
 
@@ -214,7 +220,7 @@ const DynamicCarousel = ({ carouselId, filter }) => {
         productBuy.appendChild(basketBtn);
         productBuy.appendChild(postponeBtn);
 
-        bookInfo.appendChild(img);
+        bookInfo.appendChild(ref);
         bookInfo.appendChild(priceContainer);
         bookInfo.appendChild(titleLink);
         bookInfo.appendChild(productBuy);
