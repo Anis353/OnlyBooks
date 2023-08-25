@@ -1,5 +1,5 @@
 import { Home } from "./components/Home";
-import BookDetailsPage from './components/BookDetailsPage';
+import ProductDetails from './components/ProductDetails';
 
 const AppRoutes = [
   {
@@ -8,7 +8,7 @@ const AppRoutes = [
   },
   {
       path: '/book/:id',
-      element: <BookDetailsPage />
+      element: <ProductDetails />
   },
 
 ];

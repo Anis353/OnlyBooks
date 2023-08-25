@@ -1,4 +1,6 @@
-﻿// api.js
+﻿import React from 'react';
+
+// api.js
 export async function fetchBooksAndDiscounts() {
     const booksResponse = await fetch("api/books/GetBooks");
     const booksData = await booksResponse.json();
@@ -51,23 +53,22 @@ export async function fetchBookDetails(bookId) {
         })
     ]);
 
-
     const bookWithDetails = {
         ...bookData,
         discount: discountData ? discountData.discountPercentage : null,
         author: authorData ? authorData[0].lastName + ' ' + authorData[0].firstName : null,
         category: categoryData
             ? categoryData.map((category, index) => (
-               <>
-                    {index > 0 && <span> > </span>}
+                <React.Fragment key={category.categoryId}>
                     <a href={`category/${category.categoryId}`} key={category.categoryId}>
                         {category.name}
                     </a>
-                </>
+                </React.Fragment>
             ))
             : null
     };
 
     return bookWithDetails;
 }
+
 
