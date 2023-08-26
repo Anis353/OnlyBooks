@@ -33,6 +33,9 @@
 /* Стили для цен */
 .buying {
     border: 1px solid dimgray;
+    border-right: none;
+    border-left: none;
+    margin-bottom: 10px;
 }
 
 .buying-price span,
@@ -40,9 +43,6 @@
     display: inline-block;
 }
 
-    .buying-discount span {
-        
-    }
 
 .buying-discount .origin-price {
     text-decoration: line-through;
@@ -78,7 +78,7 @@
 
 .product-button {
     display: grid;
-    place-items: center;
+    place-items: self-start;
     margin-top: 10px;
 }
 
@@ -96,3 +96,40 @@
         .product-button button span {
             font: 19px "Georgia", sans-serif;
         }
+
+
+.product-icons{
+    margin-top: 10px;
+}
+
+.product-icons .fave,
+.product-icons .compare {
+    display: block;
+}
+
+
+.product-icons a::before {
+    content: "";
+    display: inline-block;
+    width: 20px; /* Размер иконки */
+    height: 20px;
+    background-repeat: no-repeat;
+    background-size: contain; /* Изменяет размер изображения для лучшего вмещения */
+    margin-right: 7px; /* Расстояние между иконкой и текстом */
+    vertical-align: middle;
+}
+
+/* Стили для .fave (Избранное) */
+.product-icons .fave::before {
+    background-image: url(../../public/images/icons/icon-star.png); /* Путь к иконке для избранного */
+}
+
+/* Стили для .compare (Сравнить) */
+.product-icons .compare::before {
+    background-image: url(../../public/images/icons/icon-list.png); /* Путь к иконке для сравнения */
+}
+
+/* Стили для иконок */
+.icon {
+    padding-left: 25px; /* Отступ слева для текста после иконки */
+}

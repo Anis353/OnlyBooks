@@ -56,7 +56,19 @@ function BookDetailsPage() {
                                 <span>Добавить в корзину</span>
                                 </button>
                             </div>
+                            <div className='product-icons'>
+                                <a href='#' className='fave'>
+                                    <span>Добавить в отложенные</span>
+                                </a>
+                                <a href='#' className='compare'>
+                                    <span>+ к сравнению</span>
+                                </a>
+                            </div>
                         </div>
+                        <div class="articul">ID товара: {book.bookId}</div>
+                        <div class="isbn">ISBN: {book.isbn}</div>
+                        <div class="pages2">Страниц: {book.pageCount}</div>
+
                     </div>
                     <div className="product-details-right">
                         <p className="product-description">{book.description}</p>
