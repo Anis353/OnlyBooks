@@ -27,14 +27,15 @@ export async function fetchDiscounts() {
 
 // Полная информация о книгах
 export async function fetchBookDetails(bookId) {
-    const [bookResponse, authorResponse, discountsResponse, categoriesResponse] = await Promise.all([
+    const [bookResponse, authorResponse, discountsResponse, categoriesResponse, genresResponse] = await Promise.all([
         fetch(`api/books/GetBookById?bookId=${bookId}`),
         fetch(`api/books/GetAuthors?bookId=${bookId}`),
         fetch(`api/books/GetDiscountById?bookId=${bookId}`),
-        fetch(`api/books/GetCategoryById?bookId=${bookId}`)
+        fetch(`api/books/GetCategoryById?bookId=${bookId}`),
+        fetch(`api/books/GetGenreById?bookId=${bookId}`)
     ]);
 
-    const [bookData, authorData, discountData, categoryData] = await Promise.all([
+    const [bookData, authorData, discountData, categoryData, genreData] = await Promise.all([
         bookResponse.json().catch(error => {
             console.error("Error parsing book JSON:", error);
             return null;
@@ -50,6 +51,9 @@ export async function fetchBookDetails(bookId) {
         categoriesResponse.json().catch(error => {
             console.error("Error parsing categories JSON:", error);
             return null;
+        }),
+        genresResponse.json().catch(error => {
+            console.error("Error parsing genres JSON:", error);
         })
     ]);
 
@@ -65,7 +69,14 @@ export async function fetchBookDetails(bookId) {
                     </a>
                 </React.Fragment>
             ))
-            : null
+            : null,
+        genre: genreData ? genreData.map((genre, index) => (
+            <React.Fragment key={genre.genreId}>
+                <a href={`genre/${genre.genreId}`} key={genre.genreId}>
+                    {genre.name}
+                </a>
+            </React.Fragment>
+        )) : null
     };
 
     return bookWithDetails;

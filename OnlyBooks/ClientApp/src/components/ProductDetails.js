@@ -2,6 +2,7 @@
 import { useParams } from 'react-router-dom';
 import { fetchBookDetails } from './api';
 import "./ProductDetails.css";
+import RatingArea from './RatingArea.js';
 
 function BookDetailsPage() {
     const { id } = useParams(); // Получите ID книги из URL
@@ -38,6 +39,13 @@ function BookDetailsPage() {
                         <p className="product-author">Автор: {book.author}</p>
                         <p className="product-publisher">Издательство: {book.publisher}, {book.publicationYear}</p>
                         <p className="product-category">Раздел: {book.category[1]}</p>
+                        {book.genre.length > 0 ?
+                            <p>Жанр:&nbsp;
+                                {book.genre.map((genre, index) => (
+                                    <React.Fragment key={index}>
+                                        {index > 0 && ', '}
+                                        {genre}
+                                    </React.Fragment>))}</p> : ''}
                         <div className="buying">
                             <div className="buying-price">
                                 <span>Цена: </span>
@@ -65,13 +73,27 @@ function BookDetailsPage() {
                                 </a>
                             </div>
                         </div>
-                        <div class="articul">ID товара: {book.bookId}</div>
-                        <div class="isbn">ISBN: {book.isbn}</div>
-                        <div class="pages2">Страниц: {book.pageCount}</div>
-
+                        <div className="articul">ID товара: {book.bookId}</div>
+                        <div className="isbn">ISBN: {book.isbn}</div>
+                        <div className="pages2">Страниц: {book.pageCount}</div>
                     </div>
                     <div className="product-details-right">
-                        <p className="product-description">{book.description}</p>
+                        <div className='product-rating'>
+                            <div className='product-rating-body'>
+                                <div className='left'>
+                                    Рейтинг
+                                    <div className='rate'>
+                                        {book.rate.toFixed(2)}
+                                    </div>
+                                </div>
+                                <div className='right'>
+                                    <RatingArea />
+                                </div>
+                            </div>
+                        </div>
+                        <div className='product-description'></div>
+                        <p className='product-description-title'>Аннотация к книге {book.title}</p>
+                        <p className="product-description-text">{book.description}</p>
                     </div>
                 </div>
             </div>

@@ -126,7 +126,6 @@ namespace OnlyBooks.Controllers
             return StatusCode(StatusCodes.Status200OK, authors);
         }
 
-
         [HttpGet]
         [Route("GetCategoryById")]
         public IActionResult GetCategoryById(int? bookId)
@@ -151,6 +150,28 @@ namespace OnlyBooks.Controllers
             .ToList();
 
             return StatusCode(StatusCodes.Status200OK, categories);
+        }
+
+        [HttpGet]
+        [Route("GetGenreById")]
+        public IActionResult GetGenreById(int? bookId)
+        {
+            var book = _dbContext.Books
+                 .Include(b => b.Genres)
+                 .FirstOrDefault(b => b.BookId == bookId);
+
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            var genres = book.Genres.Select(a => new
+            {
+                a.GenreId,
+                a.Name,
+            });
+
+            return StatusCode(StatusCodes.Status200OK, genres);
         }
 
     }
