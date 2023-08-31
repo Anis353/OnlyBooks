@@ -17,13 +17,30 @@ export async function fetchBooksAndDiscounts() {
     return booksWithDiscounts;
 }
 
-// Берем только информацию о скидках
+// Информация о скидках
 export async function fetchDiscounts() {
     const discountsResponse = await fetch("api/books/GetDiscounts");
     const discountsData = await discountsResponse.json();
 
     return discountsData;
 }
+
+
+// Книги по категориям
+export async function fetchBooksCategory(categoryId) {
+    const categoryResponse = await fetch(`api/books/GetBooksPagination?categoryId=${categoryId}`);
+    const categoryData = await categoryResponse.json();
+
+    const discountsData = await fetchDiscounts();
+
+    const categoryWithDiscounts = categoryData.map((book) => {
+        const discountInfo = discountsData.find((discount) => discount.bookId === book.bookId);
+        return { ...book, discount: discountInfo ? discountInfo.discountPercentage : 0 };
+    });
+
+    return categoryWithDiscounts;
+}
+
 
 // Полная информация о книгах
 export async function fetchBookDetails(bookId) {

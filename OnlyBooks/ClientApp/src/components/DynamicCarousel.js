@@ -28,7 +28,7 @@ const DynamicCarousel = ({ carouselId, filter }) => {
                         filter = null;
                     }
 
-                    const response = await axios.get(`api/books/GetBooksPagination?_limit=15&_page=${currentPage}&${filter}`);
+                    const response = await axios.get(`api/books/GetBooksPagination?_limit=10&_page=${currentPage}&${filter}`);
                     let newBooks = response.data;
 
                     const booksWithDiscounts = await fetchDiscounts();

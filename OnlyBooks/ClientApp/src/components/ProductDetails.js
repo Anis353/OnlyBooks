@@ -1,17 +1,22 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchBookDetails } from './api';
+import { fetchBookDetails, fetchBooksCategory } from './api';
 import "./ProductDetails.css";
 import RatingArea from './RatingArea.js';
+import Carousel from "./Carousel";
+
 
 function BookDetailsPage() {
     const { id } = useParams(); // Получите ID книги из URL
     const [book, setBook] = useState(null);
+    const[books, setBooks] = useState([]);
 
     useEffect(() => {
         async function fetchDetails() {
             const bookDetails = await fetchBookDetails(id);
-            setBook(bookDetails); // Ожидаемый объект
+            setBook(bookDetails); 
+            const booksWithCategory = await fetchBooksCategory(bookDetails.category[1].key);
+            setBooks(booksWithCategory);
         }
 
         fetchDetails();
@@ -95,6 +100,15 @@ function BookDetailsPage() {
                         <p className='product-description-title'>Аннотация к книге {book.title}</p>
                         <p className="product-description-text">{book.description}</p>
                     </div>
+                </div>
+            </div>
+            <div className='products'>
+                <h3>Похожие товары</h3>
+                <div className='products-similar'>
+                    {books.length > 1 ?
+                        <Carousel items={books.filter((book) => book.bookId != id).slice(0, 10)} carouselId="similar-books" />
+                        :
+                        <span></span>}
                 </div>
             </div>
             </div>

@@ -1,7 +1,6 @@
 ﻿import React, { useEffect, useRef } from 'react';
 import Flickity from 'flickity';
 import "./Carousel.css";
-import { Link } from 'react-router-dom';
 
 const Carousel = ({ items, carouselId, autoPlay }) => {
     const flickityRef = useRef(null);
