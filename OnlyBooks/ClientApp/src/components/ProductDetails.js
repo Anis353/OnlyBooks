@@ -1,6 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchBookDetails, fetchBooksCategory } from './api';
+import { fetchBookDetails, fetchBooksCategory } from '../utils/api';
 import "./ProductDetails.css";
 import RatingArea from './RatingArea.js';
 import Carousel from "./Carousel";
@@ -103,13 +103,11 @@ function BookDetailsPage() {
                 </div>
             </div>
             <div className='products'>
-                <h3>Похожие товары</h3>
-                <div className='products-similar'>
-                    {books.length > 1 ?
+                {books.length > 1 ? (
+                    <div className='products-similar'>
+                        <h3> Похожие товары</h3>
                         <Carousel items={books.filter((book) => book.bookId != id).slice(0, 10)} carouselId="similar-books" />
-                        :
-                        <span></span>}
-                </div>
+                    </div>) : <span></span>}
             </div>
             </div>
     );

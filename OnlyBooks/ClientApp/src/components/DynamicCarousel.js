@@ -1,5 +1,5 @@
 ﻿import React, { useEffect, useRef, useState } from 'react';
-import { fetchDiscounts } from './api.js';
+import { fetchDiscounts } from '../utils/api.js';
 import Flickity from 'flickity';
 import 'flickity/css/flickity.css';
 import axios from 'axios';

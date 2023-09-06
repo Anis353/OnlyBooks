@@ -10,8 +10,8 @@ const MenuHeader = () => {
 					<ul>
 						<li><a href="#">Книги</a>
 							<ul>
-								<li><a href="#">Главные 2023</a></li>
-								<li><a href="#">Все книги</a></li>
+								<li><a href="/category/year=2023&minRate=7/Главные 2023">Главные 2023</a></li>
+								<li><a href="/category/all/Все книги">Все книги</a></li>
 								<li><a href="#">Билингвы</a>
 									<ul>
 										<li><a href="#">Все книги жанра</a></li>

@@ -77,6 +77,11 @@ namespace OnlyBooks.Controllers
                 booksQuery = booksQuery.Where(b => b.PublicationYear == year);
             }
 
+            int totalBooks = booksQuery.Count();
+
+            // Общее количество книг
+            Response.Headers.Add("X-Total-Books", totalBooks.ToString());
+
             List<Book> books = booksQuery
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)

@@ -11,7 +11,7 @@ const Carousel = ({ items, carouselId, autoPlay }) => {
         }
         flickityRef.current = new Flickity(`#${carouselId}`, {
             prevNextButtons: true,
-            pageDots: true,
+            pageDots: true, 
             freeScroll: autoPlay ? false : true,
             initialIndex: 0,
             cellAlign: 'left',

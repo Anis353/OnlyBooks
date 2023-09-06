@@ -1,6 +1,6 @@
 import "./Home.css";
 import React, { useEffect, useState } from 'react';
-import { fetchBooksAndDiscounts } from "./api.js";
+import { fetchBooksAndDiscounts } from "../utils/api.js";
 import Carousel from "./Carousel";
 import DynamicCarousel from "./DynamicCarousel";
 import { Fade } from "react-awesome-reveal";
