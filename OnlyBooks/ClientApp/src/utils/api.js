@@ -25,6 +25,14 @@ export async function fetchDiscounts() {
     return discountsData;
 }
 
+// Информация об авторе
+export async function fetchAuthor(bookId) {
+    const authorResponse = await fetch(`api/books/GetAuthors?bookId=${bookId}`);
+    const authorData = await authorResponse.json();
+
+    return authorData;
+}
+
 
 // Книги по категориям
 export async function fetchBooksCategory(categoryId) {

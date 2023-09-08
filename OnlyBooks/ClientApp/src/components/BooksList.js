@@ -1,9 +1,9 @@
 ﻿import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import Pagination from './Pagination'
-import "./Carousel.css";
+import Pagination from './Pagination';
 import './BooksList.css';
+import { fetchBookDetails } from '../utils/api.js';
 import { Fade } from "react-awesome-reveal";
 
 function BooksList() {
@@ -30,6 +30,7 @@ function BooksList() {
 
                 // Устанавливаем данные книг из ответа
                 setBooks(response.data);
+
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             } catch (error) {
                 console.error('Ошибка при загрузке книг:', error);
@@ -45,14 +46,15 @@ function BooksList() {
         <div className='content'>
             <div className='books-title'><span>{title}</span></div>
             <div className="books-list">
-              
                 {books.map((book) => (
                     <div className="book" key={book.bookId}>
                         <Fade>
-                        <a href={`/book/${book.bookId}`}>
+                            <a href={`/book/${book.bookId}`}>
                                 <img src={book.coverImage} alt={book.title} />
-                                <span>{book.price}</span>
-                            <h3>{book.title}</h3>
+                                <div className='price-container'>
+                                    <BookDetails bookId={book.bookId} />
+                                </div>
+                                <h3>{book.title}</h3>
                             </a>
                         </Fade>
                     </div>
@@ -63,7 +65,46 @@ function BooksList() {
                 totalPages={Math.ceil(totalPage / booksPerPage)} // Используем общее количество книг
                 onPageChange={paginate}
             />
-            </div>
+        </div>
+    );
+}
+
+function BookDetails({ bookId }) {
+    const [bookDetails, setBookDetails] = useState(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const details = await fetchBookDetails(bookId);
+            setBookDetails(details);
+        };
+        fetchData();
+
+    }, [bookId]);
+
+    if (!bookDetails) {
+        return null;
+    }
+
+    return (
+        <>
+            {bookDetails.discount ? (
+                <>
+                    <span className="discount-price">
+                        {(
+                            bookDetails.price *
+                            (1 - bookDetails.discount / 100)
+                        ).toFixed(0)}
+                    </span>
+                    <span className="original-price">
+                        <s>{bookDetails.price}</s>
+                    </span>
+                    <span className="discount-percentage">- {bookDetails.discount}%</span>
+                </>
+            ) : (
+                <span className="price">{bookDetails.price}</span>
+            )}
+            <div className="author">{bookDetails.author}</div>
+        </>
     );
 }
 
