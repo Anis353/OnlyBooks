@@ -194,3 +194,43 @@ header {
         line-height: 2.2; /* Устанавливаем высоту строки текста для подсписка */
         padding: 10px;   
     }
+
+
+/* Результат поиска */ 
+
+.search-results {
+    position: absolute;
+    border: 2px solid lightgray;
+    border-radius: 5px;
+    background-color: whitesmoke;
+    z-index: 999;
+}
+
+    .search-results ul {
+        margin-left: -20px;
+    }
+
+        .search-results ul li {
+            display: flex;
+            align-items: flex-start;
+            margin: 10px;
+            word-wrap: break-word;
+        }
+
+            .search-results ul li img {
+                width: 35px;
+                margin: 10px 5px;
+            }
+
+        .search-results ul li a {
+            color: #1b1b1b;
+        }
+
+    .result-price {
+        color: #ff5722;
+        font-size: 18px;
+    }
+
+        .result-price::after {
+            content: " \20BD";
+        }

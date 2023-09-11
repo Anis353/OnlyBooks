@@ -38,9 +38,7 @@ const MenuHeader = () => {
 
 						<li><a href="#">Иностранные</a>
 							<ul>
-								<li><a href="#">Все книги на иностранном языке</a></li>
-								<li><a href="#">Книги на английском языке</a></li>
-								<li><a href="#">Книги на других языках</a></li>
+								<li><a href="/category/subjectId=1/Книги на английском языке">Книги на английском языке</a></li>
 								<li><a href="#">Книги на испанском языке</a></li>
 								<li><a href="#">Книги на итальянском языке</a></li>
 								<li><a href="#">Книги на немецком языке</a></li>
@@ -48,17 +46,17 @@ const MenuHeader = () => {
 							</ul>
 						</li>
 						<li><a href="#">Главное</a></li>
-						<li><a href="#">Школа</a>
+						<li><a href="#">Предметы</a>
 							<ul>
-								<li><a href="#">Русский язык</a></li>
-								<li><a href="#">Английский язык</a></li>
-								<li><a href="#">Математика</a></li>
+								<li><a href="/category/subjectId=5/Русский язык">Русский язык</a></li>
+								<li><a href="/category/subjectId=1/Английский язык">Английский язык</a></li>
+								<li><a href="/category/subjectId=4/Математика">Математика</a></li>
 								<li><a href="#">Окружающий мир</a></li>
 								<li><a href="#">История</a></li>
-								<li><a href="#">Литература. Чтение</a></li>
-								<li><a href="#">Физика. Астрономия</a></li>
+								<li><a href="/category/subjectId=6/Литература.Чтения">Литература. Чтение</a></li>
+								<li><a href="/category/subjectId=3/Физика. Астрономия">Физика. Астрономия</a></li>
 								<li><a href="#">Биология. Экология</a></li>
-								<li><a href="#">География</a></li>
+								<li><a href="/category/subjectId=2/География">География</a></li>
 							</ul>
 						</li>
 						<li><a href="#">Канцтовары</a>

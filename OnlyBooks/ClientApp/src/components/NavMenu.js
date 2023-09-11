@@ -4,7 +4,7 @@ import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from '
 import { Link } from 'react-router-dom';
 import './NavMenu.css';
 import MenuHeader from './MenuHeader';
-
+import SearchBar from './SearchBar';
 export class NavMenu extends Component {
     static displayName = NavMenu.name;
 
@@ -33,16 +33,7 @@ export class NavMenu extends Component {
                         </NavbarBrand>
                     <div className="tools-header"> 
                         <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
-                        <form className="form-search">
-                            <input
-                                placeholder="Поиск книги"
-                                aria-label="Поиск книги"
-                            ></input>
-                            <button type="submit">
-                                <img src="/images/icons/lupa.png" alt="Поиск" className="icon-search" />
-                                Искать
-                            </button>
-                            </form>
+                            <SearchBar/>
                             <div className="personal-tools">
                                 <button className="btn-message">
                                     <img src="/images/icons/icon-message-static.png" />

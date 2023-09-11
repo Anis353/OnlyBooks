@@ -23,7 +23,7 @@ function BookDetailsPage() {
     }, [id]);
 
     if (!book) {
-        return <div>Loading...</div>; // Или покажите какой-то загрузочный элемент
+        return <div>Loading...</div>;
     }
 
     return (
@@ -106,7 +106,7 @@ function BookDetailsPage() {
                 {books.length > 1 ? (
                     <div className='products-similar'>
                         <h3> Похожие товары</h3>
-                        <Carousel items={books.filter((book) => book.bookId != id).slice(0, 10)} carouselId="similar-books" />
+                        <Carousel items={books.filter((book) => book.bookId !== id).slice(0, 10)} carouselId="similar-books" />
                     </div>) : <span></span>}
             </div>
             </div>
