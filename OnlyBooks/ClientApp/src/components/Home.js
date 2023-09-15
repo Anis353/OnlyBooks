@@ -7,6 +7,10 @@ import { Fade } from "react-awesome-reveal";
 export function Home() {
     const [books, setBooks] = useState([]);
 
+    // Удаление из локальной памяти
+    localStorage.removeItem('selectedSort');
+    localStorage.removeItem('currentPage');
+
     useEffect(() => {
         const fetchData = async () => {
             const booksWithDiscounts = await fetchBooksAndDiscounts();

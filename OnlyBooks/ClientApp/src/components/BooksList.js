@@ -13,6 +13,21 @@ function BooksList() {
     const [currentPage, setCurrentPage] = useState(1);
     const [booksPerPage] = useState(24);
     const [totalPage, setTotalPage] = useState(0);
+    const [sortBooks, setSortBooks] = useState([]);
+
+
+    useEffect(() => {
+        // Проверяем значение в локальном хранилище
+        const savedSort = localStorage.getItem('selectedSort');
+        if (savedSort) {
+            setSortBooks(savedSort);
+        }
+
+        const savedCurrentPage = localStorage.getItem('currentPage');
+        if (savedCurrentPage) {
+            setCurrentPage(parseInt(savedCurrentPage));
+        }
+    }, []);
 
     useEffect(() => {
         const fetchBooks = async () => {
@@ -21,6 +36,7 @@ function BooksList() {
                     params: {
                         _page: currentPage,
                         _limit: booksPerPage,
+                        sort: sortBooks,
                     }
                 });
 
@@ -38,13 +54,38 @@ function BooksList() {
         };
 
         fetchBooks();
-    }, [filter, currentPage, booksPerPage]);
+    }, [filter, currentPage, booksPerPage, sortBooks]);
+
+    // Обновляем значение currentPage в локальном хранилище при его изменении
+    useEffect(() => {
+        localStorage.setItem('currentPage', currentPage.toString());
+    }, [currentPage]);
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+    const handleSortChange = (e) => {
+        // Удаляем сохранения страницы пагинации
+        localStorage.removeItem('currentPage');
+        setCurrentPage(1);
+
+        const selectedSort = e.target.value;
+        setSortBooks(selectedSort);
+        // Добавляем сохранения для списка фильтра
+        localStorage.setItem('selectedSort', selectedSort);
+    };
 
     return (
         <div className='content'>
             <div className='books-title'><span>{title}</span></div>
+            <select name="filter" value={sortBooks} onChange={handleSortChange}>
+                <option value="" disabled>Сортировка</option>
+                <option value="date-down">Сначала новые</option>
+                <option value="date-up">Сначала старые</option>
+                <option value="rate-down">По убыванию рейтинга</option>
+                <option value="rate-up">По возрастанию рейтинга</option>
+                <option value="price-down">Сначало дорогие</option>
+                <option value="price-up">Сначало дешевые</option>
+            </select>
             <div className="books-list">
                 {books.map((book) => (
                     <div className="book" key={book.bookId}>
@@ -62,13 +103,12 @@ function BooksList() {
             </div>
             <Pagination
                 currentPage={currentPage}
-                totalPages={Math.ceil(totalPage / booksPerPage)} // Используем общее количество книг
+                totalPages={Math.ceil(totalPage / booksPerPage)} 
                 onPageChange={paginate}
             />
         </div>
     );
 }
-
 function BookDetails({ bookId }) {
     const [bookDetails, setBookDetails] = useState(null);
 

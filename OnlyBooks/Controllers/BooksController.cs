@@ -37,7 +37,7 @@ namespace OnlyBooks.Controllers
 
         [HttpGet]
         [Route("GetBooksPagination")]
-        public IActionResult GetBooksPagination(int? subjectId, int? subjectMin, int? categoryId, int? minRate, int? year, int? _page, int? _limit)
+        public IActionResult GetBooksPagination(int? subjectId, int? subjectMin, int? categoryId, int? minRate, int? year, int? _page, int? _limit, string? sort)
         {
             int pageNumber = _page ?? 1;
             int pageSize = _limit ?? 10;
@@ -82,6 +82,11 @@ namespace OnlyBooks.Controllers
             // Общее количество книг
             Response.Headers.Add("X-Total-Books", totalBooks.ToString());
 
+            if (sort != null)
+            {
+                booksQuery = SortBook(booksQuery, sort);
+            }
+
             List<Book> books = booksQuery
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
@@ -89,6 +94,39 @@ namespace OnlyBooks.Controllers
             return StatusCode(StatusCodes.Status200OK, books);
         }
 
+        // Сортировка книг
+        private IQueryable<Book> SortBook(IQueryable<Book> booksQuery, string sort)
+        {
+            if (!string.IsNullOrEmpty(sort))
+            {
+                if (sort == "date-down")
+                {
+                    booksQuery = booksQuery.OrderByDescending(b => b.PublicationYear);
+                }
+                else if (sort == "date-up")
+                {
+                    booksQuery = booksQuery.OrderBy(b => b.PublicationYear);
+                }
+                else if(sort == "rate-down")
+                {
+                    booksQuery = booksQuery.OrderByDescending(b => b.Rate);
+                }
+                else if (sort == "rate-up")
+                {
+                    booksQuery = booksQuery.OrderBy(b => b.Rate);
+                }
+                else if (sort == "price-down")
+                {
+                    booksQuery = booksQuery.OrderByDescending(b => b.Price);
+                }
+                else if (sort == "price-up")
+                {
+                    booksQuery = booksQuery.OrderBy(b => b.Price);
+                }
+            }
+
+            return booksQuery; ;
+        }
 
         [HttpGet]
         [Route("GetDiscounts")]

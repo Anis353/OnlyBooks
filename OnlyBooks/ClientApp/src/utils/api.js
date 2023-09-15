@@ -70,7 +70,7 @@ export async function fetchBookDetails(bookId) {
             return null;
         }),
         discountsResponse.json().catch(error => {
-            console.error("Discounts JSON is null:", error);
+            console.warn("Discounts JSON is null:");
             return null;
         }),
         categoriesResponse.json().catch(error => {

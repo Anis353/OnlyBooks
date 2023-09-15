@@ -33,9 +33,9 @@
         transition: background-color 0.3s ease, color 0.3s ease;
     }
 
-        .pagination button.active {
-            background-color: #fff;
-            color: #f23b26;
+        .pagination li.active button {
+            background-color: #fff; /* Цвет фона для активной кнопки */
+            color: #f23b26; /* Цвет текста для активной кнопки */
             font-weight: bold;
         }
 

@@ -14,9 +14,6 @@ const DynamicCarousel = ({ carouselId, filter }) => {
     const flickityInstanceRef = useRef(null);
     const [discounts, setDiscounts] = useState([]);
 
-    //// Условие фильтрации
-    //const filterFunction = new Function('book', `return ${filter};`);
-  
     useEffect(() => {
         const fetchData = async () => {
             if (fetching) {

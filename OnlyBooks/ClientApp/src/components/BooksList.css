@@ -94,3 +94,27 @@
 .author {
     color: #7d7d7dc0;
 }
+
+
+select {
+    /* рамка и отступы */
+    border: 0.1em solid;
+    padding: 0 0.2em;
+    max-width: 300px;
+    width: 100%;
+    font-size: 22px;
+    font-family: Aesthetic;
+    background-color: rgba(0, 0, 0, 0.1);
+    color: white;
+    margin: 10px 20px;
+}
+    select:focus {
+        box-shadow: 0 0 0.2em black;
+    }
+
+    select option {
+        background-color: #121212;
+        color: white;
+        font-size: 18px;
+    }
+
