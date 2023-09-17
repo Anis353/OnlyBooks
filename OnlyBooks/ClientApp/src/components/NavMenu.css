@@ -130,6 +130,10 @@ header {
         transform: translateX(-50%);
     }
 
+    .btn-cart a {
+        color: white;
+    }
+
 .menu-header {
     position: absolute;
 }
@@ -194,6 +198,8 @@ header {
         line-height: 2.2; /* Устанавливаем высоту строки текста для подсписка */
         padding: 10px;   
     }
+
+
 
 
 /* Результат поиска */ 

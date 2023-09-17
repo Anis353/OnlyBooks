@@ -4,12 +4,27 @@ import { fetchBookDetails, fetchBooksCategory } from '../utils/api';
 import "./ProductDetails.css";
 import RatingArea from './RatingArea.js';
 import Carousel from "./Carousel";
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart } from '../redux/cartReducer';
 
 
-function BookDetailsPage() {
-    const { id } = useParams(); // Получите ID книги из URL
+function ProductDetails()  {
+    const { id } = useParams();
     const [book, setBook] = useState(null);
-    const[books, setBooks] = useState([]);
+    const [books, setBooks] = useState([]);
+
+    const dispatch = useDispatch();
+    const cart = useSelector((state) => state.cart.cart);
+
+    const addToCartHandler = () => {
+        const newItem = {
+            id: book.bookId,
+            title: book.title,
+            price: book.price,
+            discountPrice: Math.floor(book.price * (1 - book.discount / 100))
+        };
+        dispatch(addToCart(newItem)); // Добавляем товар в корзину через Redux
+    };
 
     useEffect(() => {
         async function fetchDetails() {
@@ -65,7 +80,7 @@ function BookDetailsPage() {
                                 }
                             </div>
                             <div className='product-button'>
-                            <button type='button'>
+                                <button type='button' onClick={addToCartHandler} >
                                 <span>Добавить в корзину</span>
                                 </button>
                             </div>
@@ -113,4 +128,4 @@ function BookDetailsPage() {
     );
 }
 
-export default BookDetailsPage;
+export default ProductDetails;
