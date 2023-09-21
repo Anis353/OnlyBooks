@@ -5,7 +5,7 @@ import "./ProductDetails.css";
 import RatingArea from './RatingArea.js';
 import Carousel from "./Carousel";
 import { useDispatch, useSelector } from 'react-redux';
-import { addToCart } from '../redux/cartReducer';
+import { addToCart, increaseQuantity } from '../redux/cartReducer';
 
 
 function ProductDetails()  {
@@ -19,11 +19,21 @@ function ProductDetails()  {
     const addToCartHandler = () => {
         const newItem = {
             id: book.bookId,
+            image: book.coverImage,
             title: book.title,
             price: book.price,
             discountPrice: Math.floor(book.price * (1 - book.discount / 100))
         };
-        dispatch(addToCart(newItem)); // Добавляем товар в корзину через Redux
+
+        // Проверка дублирования
+        const existingItem = cart.find(item => item.id === newItem.id);
+        if (existingItem) {
+            // Если товар уже есть, увеличиваем его количество на 1
+            dispatch(increaseQuantity(existingItem.id));
+        } else {
+            // Если товара нет в корзине, добавляем его
+            dispatch(addToCart(newItem));
+        }
     };
 
     useEffect(() => {

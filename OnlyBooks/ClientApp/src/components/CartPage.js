@@ -1,6 +1,6 @@
 ﻿import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { clearCart } from '../redux/cartReducer'; 
+import { clearCart, clearCartItem } from '../redux/cartReducer'; 
 import './CartPage.css';
 
 const CartPage = () => {
@@ -11,23 +11,41 @@ const CartPage = () => {
         dispatch(clearCart());
     };
 
+    const handleRemoveFromCart = (id) => {
+        dispatch(clearCartItem(id));
+    };
+
+    // Общая цена товаров 
+    const totalPrice = cartItems.reduce((total, item) => {
+        const itemPrice = item.discountPrice > 0 ? item.discountPrice : item.price;
+        const itemTotalPrice = itemPrice * item.quantity; // Учитываем количество
+        return total + itemTotalPrice;
+    }, 0);
+
     return (
         <div>
-            <h2>Корзина</h2>
             {cartItems.length > 0 ? (
-                <div>
-                    <ul>
+                <div className="cart-container">
+                <h2>Корзина</h2>
+                <div className="cart books-list">
                         {cartItems.map(item => (
-                            <li key={item.id}>
-                                {item.title} - {(item.discountPrice > 0 ? item.discountPrice : item.price)}
-                            </li>
+                            <div className="cart book" key={item.id}>
+                                <button className="btn-del" onClick={() => handleRemoveFromCart(item.id)}><img src="/images/icons/icon-del.png" /></button>
+                                <img src={item.image} alt={item.title} />
+                                <h3>{item.title}</h3>
+                                <span className="price">{(item.discountPrice > 0 ? item.discountPrice : item.price)}</span>
+                                <div className="quantity">{(item.quantity > 1 ? `Количество: ${item.quantity}` : '')}</div>
+                            </div>
                         ))}
-                    </ul>
-                    <button>Оплатить</button>
-                    <button onClick={handleClearCart}>Очистить корзину</button>
+                    </div>
+                    <div className="total-price">Общая цена: {totalPrice}</div>
+                    <div className="btn">
+                        <button>Оплатить</button>
+                        <button onClick={handleClearCart}>Очистить корзину</button>
+                    </div>
                 </div>
             ) : (
-                <p>Корзина пуста</p>
+                <h2>Корзина пуста</h2>
             )}
         </div>
     );

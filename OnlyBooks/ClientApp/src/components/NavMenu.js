@@ -40,7 +40,7 @@ function NavMenu() {
                             <button className="btn-cart" >
                                 <a href="/cart">
                                 <img src="/images/icons/icon-cart.png" />
-                                    Корзина {(cart.length > 0 ? `(${cart.length})` : '')}
+                                    Корзина {(cart.length > 0 && <span className="cart-count">{cart.length}</span>)}
                                 </a>
                             </button>
                         </div>
