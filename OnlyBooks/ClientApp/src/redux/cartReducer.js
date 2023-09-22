@@ -38,6 +38,10 @@ export const cartReducer = (state = initialState, action) => {
                 ...state,
                 cart: updatedCart,
             };
+        case actionTypes.CLEAR_CART:
+            return {
+                cart: [],
+            };
         case actionTypes.INCREASE_QUANTITY: // Обрабатываем увеличение количества товара
             const bookIdToIncrease = action.payload;
             const updatedCartWithIncrease = state.cart.map((item) => {

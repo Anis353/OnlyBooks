@@ -1,9 +1,22 @@
-﻿import React from 'react';
+﻿import { React, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { clearCart, clearCartItem } from '../redux/cartReducer'; 
 import './CartPage.css';
+import PaymentForm from './modal/PaymentForm';
+
 
 const CartPage = () => {
+    // Состояние для открытия и закрытия модального окна
+    const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+
+    const openPaymentModal = () => {
+        setIsPaymentModalOpen(true);
+    };
+
+    const closePaymentModal = () => {
+        setIsPaymentModalOpen(false);
+    };
+
     const cartItems = useSelector(state => state.cart.cart);
     const dispatch = useDispatch();
 
@@ -40,13 +53,24 @@ const CartPage = () => {
                     </div>
                     <div className="total-price">Общая цена: {totalPrice}</div>
                     <div className="btn">
-                        <button>Оплатить</button>
+                        <button onClick={openPaymentModal}>Оплатить</button>
+                        {isPaymentModalOpen && (
+                            <div className="modal" style={{ display: 'block' }}>
+                                <div className="modal-content">
+                                    <span className="close" onClick={closePaymentModal}>&times;</span>
+                                    <PaymentForm closePaymentModal={closePaymentModal} />
+                                </div>
+                            </div>
+
+                        )}
+
                         <button onClick={handleClearCart}>Очистить корзину</button>
                     </div>
                 </div>
             ) : (
                 <h2>Корзина пуста</h2>
             )}
+            
         </div>
     );
 };
