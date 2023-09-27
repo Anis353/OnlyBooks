@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace OnlyBooks.Models;
-
-public partial class Genre
+namespace OnlyBooks.Models
 {
-    public int GenreId { get; set; }
+    public partial class Genre
+    {
+        public Genre()
+        {
+            Books = new HashSet<Book>();
+        }
 
-    public string Name { get; set; } = null!;
+        public int GenreId { get; set; }
+        public string Name { get; set; } = null!;
 
-    public virtual ICollection<Book> Books { get; set; } = new List<Book>();
+        public virtual ICollection<Book> Books { get; set; }
+    }
 }

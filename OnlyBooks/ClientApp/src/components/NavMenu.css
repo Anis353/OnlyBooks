@@ -9,7 +9,8 @@ html {
     font-size: 14px;
 }
 
-@media (min-width: 768px) {
+@media (min-
+    : 768px) {
     html {
         font-size: 16px;
     }
@@ -131,7 +132,7 @@ header {
         transform: translateX(-50%);
     }
 
-    .btn-cart a {
+    .btn-office a, .btn-cart a {
         color: white;
     }
 

@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace OnlyBooks.Models;
-
-public partial class Author
+namespace OnlyBooks.Models
 {
-    public int AuthorId { get; set; }
+    public partial class Author
+    {
+        public Author()
+        {
+            Books = new HashSet<Book>();
+        }
 
-    public string FirstName { get; set; } = null!;
+        public int AuthorId { get; set; }
+        public string FirstName { get; set; } = null!;
+        public string LastName { get; set; } = null!;
+        public string? Bio { get; set; }
 
-    public string LastName { get; set; } = null!;
-
-    public string? Bio { get; set; }
-
-    public virtual ICollection<Book> Books { get; set; } = new List<Book>();
+        public virtual ICollection<Book> Books { get; set; }
+    }
 }

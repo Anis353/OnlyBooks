@@ -2,6 +2,12 @@ import { Home } from "./components/Home";
 import ProductDetails from './components/ProductDetails';
 import BooksList from './components/BooksList';
 import CartPage from './components/CartPage';
+import LoginPage from './components/authorisation/Login';
+import RegisterPage from './components/authorisation/Register';
+import ClientProfile from "./components/profiles/ClientProfile";
+import SwaggerUIComponent from './utils/SwaggerUI';
+
+
 const AppRoutes = [
     {
         index: true,
@@ -18,7 +24,24 @@ const AppRoutes = [
     {
         path: '/cart',
         element: <CartPage />
+    },
+    {
+        path: '/login',
+        element: <LoginPage />
+    },
+    {
+        path: '/register',
+        element: <RegisterPage />
+    },
+    {
+        path: '/profile',
+        element: <ClientProfile />
+    },
+    {
+        path: '/swagger',
+        element: <SwaggerUIComponent />
     }
+
 ];
 
 export default AppRoutes;

@@ -14,6 +14,9 @@ function NavMenu() {
         setCollapsed(!collapsed);
     };
 
+    const user = useSelector(state => state.auth.user);
+    console.log(user);
+
     return (
         <header>
             <div className="wrapper">
@@ -30,8 +33,20 @@ function NavMenu() {
                                 Сообщение
                             </button>
                             <button className="btn-office">
-                                <img src="/images/icons/icon-office.png" />
-                                Мой Кабинет
+                                {user ? (
+                                    user.role === 'Admin' ? (
+                                        <a href="/admin/profile">
+                                            <img src="/images/icons/icon-office.png" />
+                                            Мой Кабинет
+                                        </a>) : (
+                                        <a href="/profile">
+                                            <img src="/images/icons/icon-office.png" />
+                                            Мой Кабинет
+                                        </a>)
+                                ) : (<a href="/login">
+                                        <img src="/images/icons/icon-office.png" />
+                                    Вход
+                                </a>)}
                             </button>
                             <button className="btn-favorite">
                                 <img src="/images/icons/icon-favorite.png" />
