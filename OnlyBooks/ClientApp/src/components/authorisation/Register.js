@@ -1,6 +1,7 @@
 ﻿import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
+import "./Register.css";
 
 function Register() {
     const [errorMessage, setErrorMessage] = useState(''); // Сообщения об ошибке
@@ -38,7 +39,7 @@ function Register() {
     };
 
     return (
-        <div>
+        <div className="registration-container">
             {errorMessage && <div className="error-message">{errorMessage}</div>}
             {registrationSuccess ? (
                 <div>
@@ -48,9 +49,10 @@ function Register() {
             ) : (
                 <div>
                     <h2>Регистрация</h2>
-                    <form onSubmit={handleRegister}>
+                    <form className="registration-form" onSubmit={handleRegister}>
                         <input
                             type="text"
+                            className="registration-input"
                             name="firstName"
                             value={formData.firstName}
                             onChange={handleChange}
@@ -59,6 +61,7 @@ function Register() {
                         />
                         <input
                             type="text"
+                            className="registration-input"
                             name="lastName"
                             value={formData.lastName}
                             onChange={handleChange}
@@ -67,30 +70,34 @@ function Register() {
                         />
                         <input
                             type="email"
+                            className="registration-input"
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
-                            placeholder="Email"
+                            placeholder="Почтовый ящик"
                             required
                         />
                         <input
                             type="text"
+                            className="registration-input"
                             name="phone"
                             value={formData.phone}
                             onChange={handleChange}
-                            placeholder="Phone"
+                            placeholder="Номер телефона"
                             required
                         />
                         <input
                             type="text"
+                            className="registration-input"
                             name="address"
                             value={formData.address}
                             onChange={handleChange}
-                            placeholder="Address"
+                            placeholder="Адрес"
                             required
                         />
                         <input
                             type="password"
+                            className="registration-input"
                             name="password"
                             value={formData.password}
                             onChange={handleChange}
@@ -99,17 +106,20 @@ function Register() {
                         />
                         <input
                             type="password"
+                            className="registration-input"
                             name="confirmPassword"
                             value={formData.confirmPassword}
                             onChange={handleChange}
                             placeholder="Повторить пароль"
                             required
                         />
-                        <button type="submit">Зарегистрироваться</button>
-                    </form>
+                        <button type="submit" className="registration-button">Зарегистрироваться</button>
+                        </form>
+                        <p>Есть аккаунт? <a href="/login">Войти</a></p>
                 </div>
             )}
         </div>
+
     );
 }
 

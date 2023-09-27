@@ -78,7 +78,7 @@ namespace OnlyBooks.Controllers
 
             // Найдите пользователя по email
             var user = await _userManager.FindByEmailAsync(model.Email);
-            _logger.LogInformation("Attempting email for user: " + model.Email);
+            _logger.LogInformation("Почта пользователя: " + model.Email);
 
             if (user == null)
             {
@@ -104,7 +104,40 @@ namespace OnlyBooks.Controllers
             else
             {
                 ModelState.AddModelError("Password", "Неверный пароль.");
+                return new JsonResult(new { error = "Неверный пароль." }) { StatusCode = 400 };
+            }
+        }
+
+        [HttpPost("update")]
+        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+            }
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+
+            if (user == null)
+            {
+                return NotFound(); // Пользователь не найден
+            }
+
+            // Обновите данные пользователя на основе модели UpdateUserViewModel
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.Phone = model.Phone;
+            user.Address = model.Address;
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                return Ok(); // Успешное обновление
+            }
+            else
+            {
+                return BadRequest(result.Errors); // Ошибка обновления
             }
         }
 

@@ -1,4 +1,4 @@
-﻿import { React, useState } from 'react';
+import { React, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { clearCart, clearCartItem } from '../redux/cartReducer'; 
 import './CartPage.css';
@@ -6,7 +6,6 @@ import PaymentForm from './modal/PaymentForm';
 
 
 const CartPage = () => {
-    // Состояние для открытия и закрытия модального окна
     const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
     const openPaymentModal = () => {
@@ -36,14 +35,14 @@ const CartPage = () => {
     }, 0);
 
     return (
-        <div>
+        <div className="cart-page">
             {cartItems.length > 0 ? (
                 <div className="cart-container">
                 <h2>Корзина</h2>
                 <div className="cart books-list">
                         {cartItems.map(item => (
                             <div className="cart book" key={item.id}>
-                                <button className="btn-del" onClick={() => handleRemoveFromCart(item.id)}><img src="/images/icons/icon-del.png" /></button>
+                                <button className="btn-del" onClick={() => handleRemoveFromCart(item.id)}><img alt="delete" src="/images/icons/icon-del.png" /></button>
                                 <img src={item.image} alt={item.title} />
                                 <h3>{item.title}</h3>
                                 <span className="price">{(item.discountPrice > 0 ? item.discountPrice : item.price)}</span>
@@ -63,12 +62,11 @@ const CartPage = () => {
                             </div>
 
                         )}
-
                         <button onClick={handleClearCart}>Очистить корзину</button>
                     </div>
                 </div>
             ) : (
-                <h2>Корзина пуста</h2>
+                <h2 className="cart-empty-title">Ваша корзина пуста</h2>
             )}
             
         </div>

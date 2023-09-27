@@ -89,7 +89,7 @@ export async function fetchBookDetails(bookId) {
         category: categoryData
             ? categoryData.map((category, index) => (
                 <React.Fragment key={category.categoryId}>
-                    <a href={`category/${category.categoryId}`} key={category.categoryId}>
+                    <a href={`category/categoryId=${category.categoryId}/${category.name}`} key={category.categoryId}>
                         {category.name}
                     </a>
                 </React.Fragment>

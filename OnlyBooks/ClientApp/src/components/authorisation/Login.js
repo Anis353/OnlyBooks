@@ -2,14 +2,15 @@
 import { useDispatch } from 'react-redux';
 import { setUser } from '../../redux/userReducer';
 import axios from 'axios';
-
+import { useNavigate } from 'react-router-dom';
+import "./Login.css";
 function Login() {
     const [formData, setFormData] = useState({
         email: '',
         password: '',
     });
     const [errorMessage, setErrorMessage] = useState(''); // Сообщения об ошибке
-
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const handleChange = (e) => {
@@ -25,41 +26,46 @@ function Login() {
             if (response.status === 200) {
                 const user = response.data;
                 dispatch(setUser(user));
+                navigate('/profile');
             }
         } catch (error) {
             if (error.response && error.response.data && error.response.data.error) {
                 setErrorMessage(error.response.data.error);
             } else {
+                setErrorMessage(`Ошибка входа:', ${error}`)
                 console.error('Ошибка входа:', error);
             }
         }
     };
 
     return (
-        <div>
+        <div className="login-container">
             <h2>Вход</h2>
-            {errorMessage && <div className="error-message">{errorMessage}</div>} 
-            <form onSubmit={handleLogin}>
+            {errorMessage && <div className="error-message">{errorMessage}</div>}
+            <form className="login-form" onSubmit={handleLogin}>
                 <input
                     type="email"
+                    className="login-input"
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder="Email"
+                    placeholder="Почта"
                     required
                 />
                 <input
                     type="password"
+                    className="login-input"
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
                     placeholder="Пароль"
                     required
                 />
-                <button type="submit">Войти</button>
+                <button type="submit" className="login-button">Войти</button>
             </form>
             <p>Нет аккаунта? <a href="/register">Зарегистрироваться</a></p>
         </div>
+
     );
 }
 

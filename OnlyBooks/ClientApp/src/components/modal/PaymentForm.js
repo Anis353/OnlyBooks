@@ -57,7 +57,7 @@ function PaymentForm({ closePaymentModal }) {
             <h2>Оплата</h2>
             {isPaymentCompleted ? (
                 <div>
-                    <p>Оплата успешно выполнена. Ожидайте звонка оператора.</p>
+                    <p>Запрос отправлен. Ожидайте звонка оператора.</p>
                 </div>
             ) : (
                 <div>

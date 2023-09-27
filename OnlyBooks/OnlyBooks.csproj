@@ -33,8 +33,6 @@
 
   <ItemGroup>
     <Folder Include="ClientApp\public\images\" />
-    <Folder Include="ClientApp\src\components\authorisation\" />
-    <Folder Include="ClientApp\src\components\profiles\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

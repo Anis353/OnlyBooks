@@ -5,6 +5,7 @@
 export const actionTypes = {
     SET_USER: 'SET_USER',
     LOGOUT: 'LOGOUT',
+    UPDATE_USER: 'UPDATE_USER',
 };
 
 export const userReducer = (state = initialState, action) => {
@@ -18,6 +19,11 @@ export const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 user: null,
+            };
+        case actionTypes.UPDATE_USER: 
+            return {
+                ...state,
+                user: { ...state.user, ...action.payload }, 
             };
         default:
             return state;
@@ -34,4 +40,9 @@ export const setUser = (user) => {
 
 export const logout = () => ({
     type: actionTypes.LOGOUT,
+});
+
+export const updateUser = (updatedData) => ({
+    type: actionTypes.UPDATE_USER,
+    payload: updatedData,
 });
