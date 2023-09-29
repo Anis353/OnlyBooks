@@ -4,6 +4,7 @@ import { setUser } from '../../redux/userReducer';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import "./Login.css";
+
 function Login() {
     const [formData, setFormData] = useState({
         email: '',
@@ -22,17 +23,24 @@ function Login() {
         e.preventDefault();
 
         try {
-            const response = await axios.post('api/user/login', formData); 
+            const response = await axios.post('api/user/login', formData);
             if (response.status === 200) {
                 const user = response.data;
+
+                // Добавляем логику определения роли и перенаправления
+                if (user.role === 'Client') {
+                    navigate('/profile');
+                } else if (user.role === 'Admin') {
+                    navigate('/admin/profile');
+                } 
+
                 dispatch(setUser(user));
-                navigate('/profile');
             }
         } catch (error) {
             if (error.response && error.response.data && error.response.data.error) {
                 setErrorMessage(error.response.data.error);
             } else {
-                setErrorMessage(`Ошибка входа:', ${error}`)
+                setErrorMessage(`Ошибка входа: ${error}`);
                 console.error('Ошибка входа:', error);
             }
         }
@@ -65,7 +73,6 @@ function Login() {
             </form>
             <p>Нет аккаунта? <a href="/register">Зарегистрироваться</a></p>
         </div>
-
     );
 }
 

@@ -8,7 +8,8 @@ const context =  [
     "/api/books",
     "/api/search",
     "/api/user",
-    "/swagger"
+    "/swagger",
+    "/img"
 ];
 
 module.exports = function(app) {

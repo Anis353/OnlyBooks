@@ -16,4 +16,5 @@ public class UpdateUserViewModel
 
     [Required]
     public string Address { get; set; }
+
 }

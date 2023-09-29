@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using OnlyBooks.Models;
 using OnlyBooks.ViewModel;
 using Microsoft.AspNetCore.Identity;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Drawing.Drawing2D;
 
 namespace OnlyBooks.Controllers
 {
@@ -98,7 +101,9 @@ namespace OnlyBooks.Controllers
                     user.FirstName,
                     user.LastName,
                     user.Address,
-                    user.Phone
+                    user.Phone,
+                    user.Role,
+                    user.ImageUrl
                 });
             }
             else
@@ -123,7 +128,6 @@ namespace OnlyBooks.Controllers
                 return NotFound(); // Пользователь не найден
             }
 
-            // Обновите данные пользователя на основе модели UpdateUserViewModel
             user.FirstName = model.FirstName;
             user.LastName = model.LastName;
             user.Phone = model.Phone;
@@ -141,5 +145,57 @@ namespace OnlyBooks.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("upload-image")]
+        public async Task<IActionResult> UploadImage(IFormFile image, string userEmail)
+        {
+            if (image == null)
+            {
+                return BadRequest("No image provided.");
+            }
+
+            if (string.IsNullOrEmpty(userEmail))
+            {
+                return Unauthorized("User not authenticated.");
+            }
+
+            var uniqueFileName = Guid.NewGuid().ToString() + "_" + image.FileName;
+
+            // Уникальную папка для каждого пользователя
+            var userImagesPath = Path.Combine("wwwroot/img/profiles", userEmail);
+            Directory.CreateDirectory(userImagesPath);
+
+            var imagePath = Path.Combine(userImagesPath, uniqueFileName);
+            using (var stream = new FileStream(imagePath, FileMode.Create))
+            {
+                await image.CopyToAsync(stream);
+            }
+
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            if (user != null && !string.IsNullOrEmpty(user.ImageUrl))
+            {
+                var oldImagePath = Path.Combine("wwwroot", user.ImageUrl.TrimStart('/'));
+                if (System.IO.File.Exists(oldImagePath))
+                {
+                    System.IO.File.Delete(oldImagePath);
+                }
+            }
+
+            user.ImageUrl = $"/img/profiles/{userEmail}/{uniqueFileName}";
+
+            var result = await _userManager.UpdateAsync(user);
+            if (result.Succeeded)
+            {
+                var imageUrl = $"/img/profiles/{userEmail}/{uniqueFileName}";
+                return Ok(imageUrl);
+            }
+            else
+            {
+                return BadRequest(result.Errors);
+            }
+        }
+
     }
+
 }
+

@@ -1,9 +1,9 @@
 ﻿import React, { useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, updateUser } from '../../redux/userReducer';
-import './ClientProfile.css';
+import "./AdminProfile.css"; 
 
-function ClientProfile() {
+function AdminProfile() {
     const user = useSelector(state => state.auth.user);
     const dispatch = useDispatch();
     const [isEditing, setIsEditing] = useState(false);
@@ -13,10 +13,10 @@ function ClientProfile() {
         phone: user.phone,
         address: user.address,
     });
-    const [image, setImage] = useState(user.imageUrl || '');
+    const [image, setImage] = useState(user.imageUrl || ''); 
     const imageInputRef = useRef(null);
 
-    const handleImageUpload = async e => {
+    const handleImageUpload = async (e) => {
         const file = e.target.files[0];
         if (!file) return;
 
@@ -33,6 +33,7 @@ function ClientProfile() {
                 const imageUrlUpdate = await response.text();
                 setImage(imageUrlUpdate);
                 dispatch(updateUser({ imageUrl: imageUrlUpdate }));
+                console.log('user.imageUrl = ' + user.imageUrl);
             } else {
                 console.error('Ошибка при загрузке изображения на сервер');
             }
@@ -45,12 +46,13 @@ function ClientProfile() {
         setIsEditing(true);
     };
 
-    const handleChange = e => {
+    const handleChange = (e) => {
         const { name, value } = e.target;
         setEditedData({ ...editedData, [name]: value });
     };
 
     const handleSave = async () => {
+        // Отправляем изменения на сервер
         const response = await fetch('/api/user/update', {
             method: 'POST',
             headers: {
@@ -69,21 +71,27 @@ function ClientProfile() {
             dispatch(updateUser(editedData));
             setIsEditing(false);
         } else {
+            // Обработка ошибки обновления на сервере
             console.error('Ошибка при обновлении данных на сервере');
         }
     };
 
+    // Выход из аккаунта
     const handleLogout = () => {
         dispatch(logout());
     };
 
     return (
-        <div className="profile-container">
-            <h2>Профиль</h2>
+        <div className="admin-profile-container">
+            <h2>Администратор</h2>
             {user && (
-                <div className="profile-info">
-                    <div className="profile-image">
-                        <img src={image || '/img/profiles/default.png'} alt="Профиль" onClick={() => imageInputRef.current.click()} />
+                <div className="admin-profile-info">
+                    <div className="admin-profile-image">
+                        <img
+                            src={image || '/img/profiles/default.png'} 
+                            alt="Профиль"
+                            onClick={() => imageInputRef.current.click()} 
+                        />
                         <input
                             ref={imageInputRef}
                             type="file"
@@ -92,20 +100,20 @@ function ClientProfile() {
                             onChange={handleImageUpload}
                         />
                     </div>
-                    <div className="profile-name">
+                    <div className="admin-profile-name">
                         <p className="name">{user.firstName} {user.lastName}</p>
                     </div>
-                    <div className="profile-details">
+                    <div className="admin-profile-details">
                         <p>Почта: {user.email}</p>
                         <p>Телефон: {user.phone}</p>
                         <p>Адрес: {user.address}</p>
                     </div>
                     {!isEditing ? (
-                        <button className="edit-button" onClick={handleEdit}>
+                        <button className="admin-edit-button" onClick={handleEdit}>
                             Редактировать
                         </button>
                     ) : (
-                        <div className="edit-form">
+                        <div className="admin-edit-form">
                             <input
                                 type="text"
                                 name="firstName"
@@ -138,18 +146,18 @@ function ClientProfile() {
                                 placeholder="Адрес"
                                 required
                             />
-                            <button className="save-button" onClick={handleSave}>
+                            <button className="admin-save-button" onClick={handleSave}>
                                 Сохранить
                             </button>
                         </div>
                     )}
                 </div>
             )}
-            <button className="logout-button" onClick={handleLogout}>
-                <a className="logout-link" href="/login">Выйти</a>
+            <button className="admin-logout-button" onClick={handleLogout}>
+                <a className="admin-logout-link" href="/login">Выйти</a>
             </button>
         </div>
     );
 }
 
-export default ClientProfile;
+export default AdminProfile;

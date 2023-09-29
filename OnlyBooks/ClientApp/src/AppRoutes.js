@@ -5,6 +5,7 @@ import CartPage from './components/CartPage';
 import LoginPage from './components/authorisation/Login';
 import RegisterPage from './components/authorisation/Register';
 import ClientProfile from "./components/profiles/ClientProfile";
+import AdminProfile from "./components/profiles/AdminProfile";
 import SwaggerUIComponent from './utils/SwaggerUI';
 
 
@@ -32,6 +33,10 @@ const AppRoutes = [
     {
         path: '/register',
         element: <RegisterPage />
+    },
+    {
+        path: '/admin/profile',
+        element: <AdminProfile />
     },
     {
         path: '/profile',

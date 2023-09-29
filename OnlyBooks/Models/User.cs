@@ -21,5 +21,6 @@ public partial class User : IdentityUser<int>
 
     public string Role { get; set; } = null!;
 
+    public string? ImageUrl { get; set; }
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 }

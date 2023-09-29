@@ -4,6 +4,7 @@ using OnlyBooks.Models;
 using System.Text.Json.Serialization;
 using OnlyBooks.Identity;
 using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<OnlyBooksContext>();
@@ -43,14 +44,17 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
+
 app.UseRouting();
+
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
 
-app.MapFallbackToFile("index.html"); ;
 
+app.MapFallbackToFile("index.html"); ;
 
 app.Run();

@@ -37,11 +37,11 @@ function NavMenu() {
                                     user.role === 'Admin' ? (
                                         <a href="/admin/profile">
                                             <img src="/images/icons/icon-office.png" />
-                                            Мой Кабинет
+                                            Мой профиль 
                                         </a>) : (
                                         <a href="/profile">
                                             <img src="/images/icons/icon-office.png" />
-                                            Мой Кабинет
+                                            Мой профиль 
                                         </a>)
                                 ) : (<a href="/login">
                                         <img src="/images/icons/icon-office.png" />
