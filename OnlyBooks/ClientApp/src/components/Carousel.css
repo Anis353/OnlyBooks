@@ -238,28 +238,28 @@
     margin-top: 5px;
 }
 
-.book-info .book-price {
-    font: 19px "PTSans", "Tahoma", sans-serif;
-    text-align: left;
-    color: black;
-    border: 0.5px solid black;
-    background-color: white;
-    padding: 0 2px;
-}
+    .book-info .book-price {
+        font: 19px "PTSans", "Impact", sans-serif;
+        text-align: left;
+        color: black;
+        background-color: white;
+        padding: 0 7px;
+    }
 
 .book-info .book-price::after {
     content: " \20BD";
 }
 
-.book-info .original-price {
-    font: 18px "PTSans", "Tahoma", sans-serif;
-    text-decoration: line-through;
-    margin-left: 8px;
-}
+    .book-info .original-price {
+        font: 18px "PTSans", "Tahoma", sans-serif;
+        text-decoration: line-through;
+        text-decoration-color: white;
+        margin-left: 8px;
+    }
 
-.book-info .original-price::after {
-    content: none;
-}
+    .book-info .original-price::after {
+        content: " \20BD";
+    }
 
 /* ссылка при нажатии на картинку */
 .image-link {

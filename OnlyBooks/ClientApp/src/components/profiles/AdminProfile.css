@@ -1,39 +1,62 @@
-﻿/* Контейнер профиля */
+﻿
+.admin-profile {
+    display: flex;
+}
+
 .admin-profile-container {
-    background-color: #51515140;
+    flex: 1;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 5px 1px rgba(119,119,119,0.75);
-    -webkit-box-shadow: 0px 0px 5px 1px rgba(119,119,119,0.75);
-    -moz-box-shadow: 0px 0px 5px 1px rgba(119,119,119,0.75);
-    text-align: center;
+    text-align: left;
     max-width: 400px;
-    margin: 50px auto;
+    border: 1px solid #eaeaea0d;
+    border-radius: 10px;
+    margin: 20px 10px 20px 0;
 }
 
     /* Заголовок профиля */
     .admin-profile-container h2 {
-        color: red;
-        font-size: 24px;
+        display: inline-block;
+        text-align: left;
+        color: white;
+        padding: 5px;
+        font-size: 14px;
+        background-color: blue;
         text-shadow: 0px 0px 6px rgba(111, 0, 12, 0.75);
     }
 
 /* Имя и фамилия пользователя */
 .admin-profile-name p {
-    font-size: 28px;
+    font-size: 20px;
     font-weight: bold;
     margin-bottom: 10px;
+    text-align: center;
 }
 
-/* Подробная информация о пользователе */
-.admin-profile-details p {
-    font-size: 18px;
-    margin: 5px 0;
+.admin-profile-details  {
+
 }
+
+.info-row {
+    display: flex;
+    align-items: center; 
+    margin-bottom: 10px; 
+}
+
+.info-label {
+    flex: 0 0 120px; 
+    text-align: left; 
+    margin-right: 10px; 
+}
+
+.info-value {
+    flex: 1; 
+    text-align: left; 
+}
+
 
 /* Кнопка редактирования */
 .admin-edit-button {
-    background-color: #007bff;
+    background-color: #eaeaea0d;
     color: #fff;
     border: none;
     border-radius: 4px;
@@ -122,3 +145,69 @@
         object-fit: cover; 
         border-radius: 50%; 
     }
+
+.admin-orders-container {
+    flex: 1;
+    max-width: 500px;
+    max-height: 700px;
+    overflow-y: auto;
+    border: 1px solid #eaeaea0d;
+    border-radius: 10px;
+    margin: 20px 10px 20px 0;
+}
+
+    .admin-orders-container h3 {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .admin-orders-container ul{
+        margin-top: 20px;
+    }
+
+    .admin-orders-container ul li {
+        margin: 5px 10px;
+        border: 1px solid white;
+        background-color: #101010;
+        border-radius: 10px;
+        padding: 10px;
+        list-style: none;
+    }
+
+    .admin-orders-container ul li button {
+        background-color: #1b1b1b;
+        border-radius: 10px;
+        border: 1px solid white;
+        color: white;
+        padding: 5px 10px;
+        margin: 5px 5px 0 0px;
+    }
+
+    .admin-orders-container .totalAmount::after {
+        content: " \20BD";
+    }
+
+.admin-users-container {
+    display: inline-block;
+    border: 1px solid #eaeaea0d;
+    overflow-y: auto;
+    border-radius: 10px;
+    margin: 20px 10px 20px 0;
+    padding: 5px 20px;
+}
+
+    /* Стили для таблицы пользователей */
+    .user-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    /* Стили для ячеек таблицы с сокращением длинных строк */
+    .truncate {
+        max-width: 200px; /* Установите максимальную ширину, которая вам подходит */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 5px; /* Расстояние между столбцами */
+}

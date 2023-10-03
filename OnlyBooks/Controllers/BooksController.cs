@@ -5,6 +5,7 @@ using OnlyBooks.Models;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace OnlyBooks.Controllers
 {
@@ -12,18 +13,18 @@ namespace OnlyBooks.Controllers
     [ApiController]
     public class BooksController : Controller
     {
-        private OnlyBooksContext _dbContext;
+        private OnlyBooksContext _сontext;
 
         public BooksController(OnlyBooksContext dbContext)
         {
-            _dbContext = dbContext; 
+            _сontext = dbContext; 
         }
 
         [HttpGet]
         [Route("GetBooks")]
         public IActionResult GetBooks()
         {
-            List<Book> books = _dbContext.Books.ToList();
+            List<Book> books = _сontext.Books.ToList();
             return StatusCode(StatusCodes.Status200OK, books);
         }
 
@@ -31,7 +32,7 @@ namespace OnlyBooks.Controllers
         [Route("GetBookById")]
         public IActionResult GetBookById(int? bookId)
         {
-            var book = _dbContext.Books.FirstOrDefault(b => b.BookId == bookId);
+            var book = _сontext.Books.FirstOrDefault(b => b.BookId == bookId);
             return StatusCode(StatusCodes.Status200OK, book);
         }
 
@@ -42,7 +43,7 @@ namespace OnlyBooks.Controllers
             int pageNumber = _page ?? 1;
             int pageSize = _limit ?? 10;
 
-            IQueryable<Book> booksQuery = _dbContext.Books;
+            IQueryable<Book> booksQuery = _сontext.Books;
 
             // Применяем фильтр по предмету (subjectId)
             if (subjectId.HasValue)
@@ -58,7 +59,7 @@ namespace OnlyBooks.Controllers
             // Применяем фильтр по категории (categoryId)
             if (categoryId.HasValue)
             {
-                List<int> bookIdsInCategory = _dbContext.BookCategories
+                List<int> bookIdsInCategory = _сontext.BookCategories
                     .Where(bc => bc.CategoryId == categoryId)
                     .Select(bc => bc.BookId.Value)
                     .ToList();
@@ -132,7 +133,7 @@ namespace OnlyBooks.Controllers
         [Route("GetDiscounts")]
         public IActionResult GetDiscounts()
         {
-            List<Discount> discounts = _dbContext.Discounts.ToList();
+            List<Discount> discounts = _сontext.Discounts.ToList();
             return StatusCode(StatusCodes.Status200OK, discounts);
         }
 
@@ -140,7 +141,7 @@ namespace OnlyBooks.Controllers
         [Route("GetDiscountById")]
         public IActionResult GetDiscountById(int? bookId)
         {
-            var discount = _dbContext.Discounts.FirstOrDefault(d => d.BookId == bookId);
+            var discount = _сontext.Discounts.FirstOrDefault(d => d.BookId == bookId);
             return StatusCode(StatusCodes.Status200OK, discount);
         }
 
@@ -149,7 +150,7 @@ namespace OnlyBooks.Controllers
         [Route("GetAuthors")]
         public IActionResult GetAuthorsById(int? bookId)
         {
-            var book = _dbContext.Books
+            var book = _сontext.Books
                .Include(b => b.Authors)
                .FirstOrDefault(b => b.BookId == bookId);
 
@@ -178,7 +179,7 @@ namespace OnlyBooks.Controllers
                 return BadRequest("Книга не найдена");
             }
 
-            var bookCategories = _dbContext.BookCategories
+            var bookCategories = _сontext.BookCategories
                 .Where(bc => bc.BookId == bookId)
                 .Select(bc => bc.CategoryId)
                 .ToList();
@@ -188,7 +189,7 @@ namespace OnlyBooks.Controllers
                 return NotFound("Категорий не найдено");
             }
 
-            var categories = _dbContext.Categories
+            var categories = _сontext.Categories
             .Where(c => bookCategories.Contains(c.CategoryId))
             .ToList();
 
@@ -199,7 +200,7 @@ namespace OnlyBooks.Controllers
         [Route("GetGenreById")]
         public IActionResult GetGenreById(int? bookId)
         {
-            var book = _dbContext.Books
+            var book = _сontext.Books
                  .Include(b => b.Genres)
                  .FirstOrDefault(b => b.BookId == bookId);
 
@@ -216,6 +217,30 @@ namespace OnlyBooks.Controllers
 
             return StatusCode(StatusCodes.Status200OK, genres);
         }
+
+        [HttpPost]
+        [Route("PostOrder")]
+        public IActionResult PostOrder([FromBody] Order order)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(order.ShippingAddress))
+                {
+                   order.ShippingAddress = "Адрес уточняется";
+                }
+
+                _сontext.Orders.Add(order);
+                _сontext.SaveChanges();
+
+                return Ok("Заказ успешно создан.");
+            }
+            catch (Exception ex)
+            {
+                // Обработка ошибок
+                return BadRequest($"Ошибка при создании заказа: {ex.Message}");
+            }
+        }
+
 
     }
 }

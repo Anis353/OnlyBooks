@@ -58,12 +58,13 @@
         border: none;
         font-family: 'Lato';
         font-size: inherit;
-        color: inherit;
-        background: none;
+        color: white;
+        background: inherit;
         cursor: pointer;
         padding: 25px 80px;
         display: inline-block;
         margin: 15px 30px;
+        border-radius: 10px;
         text-transform: uppercase;
         letter-spacing: 1px;
         font-weight: 700;
@@ -99,7 +100,8 @@
 }
 
 .modal-content {
-    background-color: white;
+    background-color: #1a1a1a;
+    color: white;
     padding: 20px;
     position: absolute;
     top: 50%;

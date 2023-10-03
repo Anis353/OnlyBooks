@@ -7,6 +7,7 @@ export const actionTypes = {
     CLEAR_CART: 'CLEAR_CART',
     CLEAR_CART_ITEM: 'CLEAR_CART_ITEM',
     INCREASE_QUANTITY: 'INCREASE_QUANTITY',
+    UPDATE_TOTAL_PRICE: 'UPDATE_TOTAL_PRICE'
 };
 
 export const cartReducer = (state = initialState, action) => {
@@ -57,6 +58,11 @@ export const cartReducer = (state = initialState, action) => {
                 ...state,
                 cart: updatedCartWithIncrease,
             };
+        case actionTypes.UPDATE_TOTAL_PRICE:
+            return {
+                ...state,
+                totalPrice: action.payload,
+            };
         default:
             return state;
     }
@@ -79,4 +85,9 @@ export const clearCartItem = (item) => ({
 export const increaseQuantity = (itemId) => ({
     type: actionTypes.INCREASE_QUANTITY,
     payload: itemId,
+});
+
+export const updateTotalPrice = (updatedData) => ({
+    type: actionTypes.UPDATE_TOTAL_PRICE,
+    payload: updatedData,
 });

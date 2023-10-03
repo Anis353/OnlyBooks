@@ -1,6 +1,7 @@
-﻿import React, { useState, useRef } from 'react';
+﻿import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, updateUser } from '../../redux/userReducer';
+import { format } from 'date-fns';
 import "./AdminProfile.css"; 
 
 function AdminProfile() {
@@ -15,7 +16,87 @@ function AdminProfile() {
     });
     const [image, setImage] = useState(user.imageUrl || ''); 
     const imageInputRef = useRef(null);
+    const [orders, setOrders] = useState([]);
+    const [users, setUsers] = useState([]);
 
+    const handleEdit = () => {
+        setIsEditing(true);
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setEditedData({ ...editedData, [name]: value });
+    };
+
+    // Выход из аккаунта
+    const handleLogout = () => {
+        dispatch(logout());
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const ordersResponse = await fetch('/api/admin/orders');
+                const ordersData = await ordersResponse.json();
+                setOrders(ordersData);
+
+                const usersResponse = await fetch('/api/admin/users');  
+                const usersData = await usersResponse.json();
+                setUsers(usersData);
+
+            } catch (error) {
+                console.error('Ошибка при получении данных:', error);
+            }
+            };
+
+        fetchData();
+    }, []);
+
+    // Меняем статус оплаты таблицы Order
+    const handlePaymentStatusChange = async (index, status) => {
+        try {
+            const selectedOrder = orders[index];
+            const response = await fetch(`/api/admin/update-payment-status/${selectedOrder.orderId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ paymentStatus: status }),
+            });
+
+            if (response.ok) {
+                const updatedOrders = [...orders];
+                updatedOrders[index].paymentStatus = status;
+                setOrders(updatedOrders);
+            } else {
+                console.error('Ошибка при обновлении статуса оплаты');
+            }
+        } catch (error) {
+            console.error('Ошибка при обновлении статуса оплаты:', error);
+        }
+    };
+
+    // Удаляем запись из таблицы Order
+    const handleDeleteOrder = async (index) => {
+        try {
+            const selectedOrder = orders[index];
+            const response = await fetch(`/api/admin/delete-order/${selectedOrder.orderId}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                const updatedOrders = [...orders];
+                updatedOrders.splice(index, 1);
+                setOrders(updatedOrders);
+            } else {
+                console.error('Ошибка при удалении заказа');
+            }
+        } catch (error) {
+            console.error('Ошибка при удалении заказа:', error);
+        }
+    };
+
+    // Обновляем фото профиля
     const handleImageUpload = async (e) => {
         const file = e.target.files[0];
         if (!file) return;
@@ -42,15 +123,7 @@ function AdminProfile() {
         }
     };
 
-    const handleEdit = () => {
-        setIsEditing(true);
-    };
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setEditedData({ ...editedData, [name]: value });
-    };
-
+    // Обновляем запись в таблице Order
     const handleSave = async () => {
         // Отправляем изменения на сервер
         const response = await fetch('/api/user/update', {
@@ -76,12 +149,9 @@ function AdminProfile() {
         }
     };
 
-    // Выход из аккаунта
-    const handleLogout = () => {
-        dispatch(logout());
-    };
 
     return (
+        <div className="admin-profile">
         <div className="admin-profile-container">
             <h2>Администратор</h2>
             {user && (
@@ -104,9 +174,20 @@ function AdminProfile() {
                         <p className="name">{user.firstName} {user.lastName}</p>
                     </div>
                     <div className="admin-profile-details">
-                        <p>Почта: {user.email}</p>
-                        <p>Телефон: {user.phone}</p>
-                        <p>Адрес: {user.address}</p>
+                            <div className="info-row">
+                                <p className="info-label">Почта:</p>
+                                <p className="info-value">{user.email}</p>
+                            </div>
+
+                            <div className="info-row">
+                                <p className="info-label">Телефон:</p>
+                                <p className="info-value">{user.phone}</p>
+                            </div>
+
+                            <div className="info-row">
+                                <p className="info-label">Адрес:</p>
+                                <p className="info-value">{user.address}</p>
+                            </div>
                     </div>
                     {!isEditing ? (
                         <button className="admin-edit-button" onClick={handleEdit}>
@@ -157,6 +238,47 @@ function AdminProfile() {
                 <a className="admin-logout-link" href="/login">Выйти</a>
             </button>
         </div>
+          <div className="admin-orders-container">
+                <h3>Заказы</h3>
+                <ul>
+                    {orders.map((order, index) => (
+                        <li key={index}>
+                            <strong>Email:</strong> {order.email}<br />
+                            <strong>Дата заказа:</strong> {format(new Date(order.orderDate), 'yyyy-MM-dd HH:mm')} <br />
+                            <strong>Сумма заказа:</strong><span className="totalAmount"> {order.totalAmount}</span><br />
+                            <strong>Статус оплаты:</strong> {order.paymentStatus}<br />
+                            <strong>Адрес доставки:</strong> {order.shippingAddress}<br />
+                            <button onClick={() => handlePaymentStatusChange(index, 'Оплачено')}>Оплачено</button>
+                            <button onClick={() => handleDeleteOrder(index)}>Отмена</button>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+            <div className="admin-users-container">
+                <h3>Пользователи</h3>
+                <table className="user-table">
+                    <thead>
+                        <tr>
+                            <th>Клиент</th>
+                            <th>Почта</th>
+                            <th>Телефон</th>
+                            <th>Адрес</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {users.map((user, index) => (
+                            <tr key={index}>
+                                <td className="truncate">{user.firstName + ' ' + user.lastName}</td>
+                                <td className="truncate">{user.email}</td>
+                                <td className="truncate">{user.phone}</td>
+                                <td className="truncate">{user.address}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+
+     </div>
     );
 }
 

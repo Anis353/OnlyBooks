@@ -97,7 +97,9 @@ namespace OnlyBooks.Controllers
                 // Успешный вход
                 return Ok(new
                 {
+                    user.Id,
                     user.Email,
+                    user.Password,
                     user.FirstName,
                     user.LastName,
                     user.Address,

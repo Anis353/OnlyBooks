@@ -7,6 +7,7 @@
     "@popperjs/core": "^2.11.8",
     "axios": "^1.4.0",
     "bootstrap": "^5.2.3",
+    "date-fns": "^2.30.0",
     "flickity": "^3.0.0",
     "google-libphonenumber": "^3.2.33",
     "http-proxy-middleware": "^2.0.6",

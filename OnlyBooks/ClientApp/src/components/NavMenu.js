@@ -33,7 +33,7 @@ function NavMenu() {
                                 Сообщение
                             </button>
                             <button className="btn-office">
-                                {user ? (
+                                {user ? (   
                                     user.role === 'Admin' ? (
                                         <a href="/admin/profile">
                                             <img src="/images/icons/icon-office.png" />

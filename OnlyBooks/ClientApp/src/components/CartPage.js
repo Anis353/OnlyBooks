@@ -1,6 +1,6 @@
 import { React, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { clearCart, clearCartItem } from '../redux/cartReducer'; 
+import { clearCart, clearCartItem, updateTotalPrice } from '../redux/cartReducer'; 
 import './CartPage.css';
 import PaymentForm from './modal/PaymentForm';
 
@@ -33,6 +33,8 @@ const CartPage = () => {
         const itemTotalPrice = itemPrice * item.quantity; // Учитываем количество
         return total + itemTotalPrice;
     }, 0);
+
+    dispatch(updateTotalPrice(totalPrice));
 
     return (
         <div className="cart-page">

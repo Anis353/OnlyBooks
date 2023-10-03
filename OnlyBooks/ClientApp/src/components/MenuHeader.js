@@ -59,9 +59,7 @@ const MenuHeader = () => {
 								<li><a href="/category/subjectId=2/География">География</a></li>
 							</ul>
 						</li>
-						<li><a href="#">Канцтовары</a>
-						</li>
-						<li><a href="#">Приложения</a></li>
+						<li><a href="/apps">Приложения</a></li>
 					</ul>
 				</nav>
             </div>

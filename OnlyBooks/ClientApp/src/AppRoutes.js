@@ -7,6 +7,7 @@ import RegisterPage from './components/authorisation/Register';
 import ClientProfile from "./components/profiles/ClientProfile";
 import AdminProfile from "./components/profiles/AdminProfile";
 import SwaggerUIComponent from './utils/SwaggerUI';
+import PhoneApp from "./components/apps/phone";
 
 
 const AppRoutes = [
@@ -45,7 +46,12 @@ const AppRoutes = [
     {
         path: '/swagger',
         element: <SwaggerUIComponent />
+    },
+    {
+        path: '/apps',
+        element: <PhoneApp/>
     }
+
 
 ];
 

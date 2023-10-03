@@ -8,9 +8,6 @@ import store from './redux/store';
 
 export default function App() {
 
-    //window.onload = () => {
-    //};
-
     return (
         <Provider store={store}>
             <Layout>

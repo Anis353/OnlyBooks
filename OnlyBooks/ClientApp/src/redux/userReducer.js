@@ -1,5 +1,6 @@
 ﻿const initialState = {
     user: null, 
+    totalPrice: 0,
 };
 
 export const actionTypes = {

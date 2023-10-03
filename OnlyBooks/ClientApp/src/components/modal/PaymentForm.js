@@ -1,21 +1,59 @@
-﻿import React, { useState } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import { PhoneNumberUtil, PhoneNumberFormat, CountryCodeSource } from 'google-libphonenumber';
+import { useSelector } from 'react-redux';
 
 function PaymentForm({ closePaymentModal }) {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [selectedCountry, setSelectedCountry] = useState(''); // Выбранная страна
     const [error, setError] = useState('');
     const [isPaymentCompleted, setIsPaymentCompleted] = useState(false);
-
-
     const phoneNumberUtil = PhoneNumberUtil.getInstance();
 
-    const handlePayment = () => {
+    const user = useSelector(state => state.auth.user);
+    const totalPrice = useSelector(state => state.cart.totalPrice);
+
+
+    useEffect(() => {
+        if (user.phone !== null) { setPhoneNumber(user.phone); }
+    }, []);
+
+ 
+    const handlePayment = async () => {
         if (!phoneNumber) {
             setError('Пожалуйста, введите номер телефона.');
             return;
+        }
+
+        if (user !== null) {
+            // Получение текущей даты и времени
+            const currentDateTime = new Date();
+
+            // Форматирование даты и времени в строку, например, в формате ISO
+            const formattedDateTime = currentDateTime.toISOString();
+
+            // Добавить в таблицу Orders
+            const response = await fetch('/api/books/postOrder', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: user.id,
+                    orderDate: formattedDateTime,
+                    totalAmount: totalPrice,
+                    paymentStatus: "Ожидает оплаты",
+                    shippingAddress: user.address
+                }),
+            });
+
+            if (response.ok) {
+                console.log('Заказ добавлен в базу! ' + response);
+            } else {
+                const responseText = await response.text();
+                console.error(`Ошибка при обновлении данных на сервере: ${responseText}`);
+            }
         }
 
         try {
@@ -33,6 +71,8 @@ function PaymentForm({ closePaymentModal }) {
             const formattedPhoneNumber = phoneNumberUtil.format(parsedPhoneNumber, PhoneNumberFormat.E164);
             console.log('Номер телефона:', formattedPhoneNumber);
 
+           
+
             // Успешно выполнена оплата
             setIsPaymentCompleted(true);
 
@@ -44,6 +84,7 @@ function PaymentForm({ closePaymentModal }) {
             // Если прошел все проверки, очищаем ошибку
             setError('');
         } catch (error) {
+            console.log('Заказ добавлен в базу! ' + user.Id, + " " + totalPrice + " " + user.address + " " + user);
             setError('Произошла ошибка при валидации номера телефона.');
             return;
         }
@@ -60,7 +101,7 @@ function PaymentForm({ closePaymentModal }) {
                     <p>Запрос отправлен. Ожидайте звонка оператора.</p>
                 </div>
             ) : (
-                <div>
+                <div className="number-form">
                     <PhoneInput
                         defaultCountry="RU"
                         placeholder="Введите номер телефона"
