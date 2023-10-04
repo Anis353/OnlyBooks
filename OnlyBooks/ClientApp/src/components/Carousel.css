@@ -5,28 +5,42 @@
     position: relative;
 }
 
-    #best-books.gallery-banner,
-    #similar-books.gallery-banner {
+    #best-books.gallery-banner
+    {
         width: 910px;
     }
 
-  .gallery-cell-banner {
-    width: 20%;
-    height: 250px;
-    margin: 0 50px;
-    display: inline-block;
-    overflow: hidden; /* Чтобы скрыть выходящую часть изображения */
-    position: relative;
-}
+     #similar-books.gallery-banner {
+         width: 90%;
+         height: 350px;
+     }
 
-#best-books .gallery-cell-banner img,
-#similar-books .gallery-cell-banner img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transform: translateY(30px); /* Сместите изображение вниз на 30 пикселей по умолчанию */
-    transition: transform 0.3s ease;
-}
+    .gallery-cell-banner {
+        width: 20%;
+        height: 250px;
+        margin: 0 50px;
+        display: inline-block;
+        overflow: hidden; /* Чтобы скрыть выходящую часть изображения */
+        position: relative;
+    }
+        #similar-books .gallery-cell-banner {
+            height: 350px;
+        }
+
+        #best-books .gallery-cell-banner img,
+        #similar-books .gallery-cell-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: translateY(30px); /* Сместите изображение вниз на 30 пикселей по умолчанию */
+            transition: transform 0.3s ease;
+        }
+
+            #similar-books .gallery-cell-banner img {
+                margin-left: 30px;
+                width: 90%;
+            }
+
 
         /* Показываем элемент скидки при наведении на книгу */
 #best-books .gallery-cell-banner:hover .discount-label,

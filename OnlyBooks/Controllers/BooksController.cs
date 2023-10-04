@@ -44,6 +44,7 @@ namespace OnlyBooks.Controllers
             int pageSize = _limit ?? 10;
 
             IQueryable<Book> booksQuery = _сontext.Books;
+            booksQuery = _сontext.Books.Include(b => b.Discounts);
 
             // Применяем фильтр по предмету (subjectId)
             if (subjectId.HasValue)

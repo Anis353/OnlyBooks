@@ -7,11 +7,11 @@ import Carousel from "./Carousel";
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, increaseQuantity } from '../redux/cartReducer';
 
-
 function ProductDetails()  {
     const { id } = useParams();
     const [book, setBook] = useState(null);
     const [books, setBooks] = useState([]);
+    const bookId = parseInt(id, 10);
 
     const dispatch = useDispatch();
     const cart = useSelector((state) => state.cart.cart);
@@ -131,7 +131,7 @@ function ProductDetails()  {
                 {books.length > 1 ? (
                     <div className='products-similar'>
                         <h3> Похожие товары</h3>
-                        <Carousel items={books.filter((book) => book.bookId !== id).slice(0, 10)} carouselId="similar-books" />
+                        <Carousel items={books.filter((book) => book.bookId !== bookId).slice(0, 10)} carouselId="similar-books" />
                     </div>) : <span></span>}
             </div>
             </div>

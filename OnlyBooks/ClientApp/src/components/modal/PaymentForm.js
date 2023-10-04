@@ -2,7 +2,8 @@
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import { PhoneNumberUtil, PhoneNumberFormat, CountryCodeSource } from 'google-libphonenumber';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { clearCart} from '../../redux/cartReducer'; 
 
 function PaymentForm({ closePaymentModal }) {
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -13,10 +14,10 @@ function PaymentForm({ closePaymentModal }) {
 
     const user = useSelector(state => state.auth.user);
     const totalPrice = useSelector(state => state.cart.totalPrice);
-
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        if (user.phone !== null) { setPhoneNumber(user.phone); }
+        if (user !== null) { setPhoneNumber(user.phone); }
     }, []);
 
  
@@ -71,13 +72,12 @@ function PaymentForm({ closePaymentModal }) {
             const formattedPhoneNumber = phoneNumberUtil.format(parsedPhoneNumber, PhoneNumberFormat.E164);
             console.log('Номер телефона:', formattedPhoneNumber);
 
-           
-
             // Успешно выполнена оплата
             setIsPaymentCompleted(true);
-
+         
             setTimeout(() => {
                 setIsPaymentCompleted(false); 
+                dispatch(clearCart());
                 closePaymentModal();
             }, 5000); 
 

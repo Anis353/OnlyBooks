@@ -19,10 +19,11 @@ const CartPage = () => {
     const cartItems = useSelector(state => state.cart.cart);
     const dispatch = useDispatch();
 
+    // Очистка корзины
     const handleClearCart = () => {
         dispatch(clearCart());
     };
-
+     // Удачение книги из корзины
     const handleRemoveFromCart = (id) => {
         dispatch(clearCartItem(id));
     };

@@ -60,7 +60,7 @@ function SearchBar() {
                                 <a href={`/book/${book.bookId}`}><img src={book.coverImage} alt={book.title} /></a>
                                 <div className="book-info">
                                     <a href={`/book/${book.bookId}`} className="book-title">{book.title}</a>
-                                    <span className="result-price">{book.price}</span>
+                                    <span className="result-price">{book.priceWithDiscount}</span>
                                 </div>
                             </li>
                         ))}

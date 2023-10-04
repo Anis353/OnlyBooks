@@ -113,6 +113,10 @@ header {
         color: white;
     }
 
+    .personal-tools a:hover {
+        text-decoration: none;
+    }
+
 .btn-message,
 .btn-office,
 .btn-favorite,
@@ -214,10 +218,12 @@ header {
     }
 
 
-/* Результат поиска */ 
+/* Результат поиска */
 
 .search-results {
     position: absolute;
+    max-height: 300px;
+    overflow-y: auto;
     border: 2px solid lightgray;
     border-radius: 5px;
     background-color: whitesmoke;

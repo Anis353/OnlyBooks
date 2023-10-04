@@ -4,6 +4,8 @@ import Flickity from 'flickity';
 import 'flickity/css/flickity.css';
 import axios from 'axios';
 import "./Carousel.css";
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart, increaseQuantity } from '../redux/cartReducer';
 
 // Динамическая пагинация карусели
 const DynamicCarousel = ({ carouselId, filter }) => {
@@ -13,6 +15,9 @@ const DynamicCarousel = ({ carouselId, filter }) => {
     const [loadingMore, setLoadingMore] = useState(false);
     const flickityInstanceRef = useRef(null);
     const [discounts, setDiscounts] = useState([]);
+
+    const dispatch = useDispatch();
+    const cart = useSelector((state) => state.cart.cart);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -90,6 +95,27 @@ const DynamicCarousel = ({ carouselId, filter }) => {
         fetchData(); 
 
     }, []);
+
+    // Добавление в корзину
+    const addToCartHandler = (book) => {
+        const newItem = {
+            id: book.bookId,
+            image: book.coverImage,
+            title: book.title,
+            price: book.price,
+            discountPrice: Math.floor(book.price * (1 - book.discount / 100)),
+        };
+
+        // Проверка дублирования
+        const existingItem = cart.find((item) => item.id === newItem.id);
+        if (existingItem) {
+            // Если товар уже есть, увеличиваем его количество на 1
+            dispatch(increaseQuantity(existingItem.id));
+        } else {
+            // Если товара нет в корзине, добавляем его
+            dispatch(addToCart(newItem));
+        }
+    };
 
     function getDaysDeclension(days) {
         const lastDigit = days % 10;
@@ -198,11 +224,12 @@ const DynamicCarousel = ({ carouselId, filter }) => {
         // Кнопка корзины
         const basketBtn = document.createElement('button');
         basketBtn.className = 'basket-button';
-        basketBtn.innerHTML = 'В КОРЗИНУ';
+         basketBtn.innerHTML = 'В КОРЗИНУ';
+         basketBtn.addEventListener('click', () => addToCartHandler(book));
 
         // Кнопка отложить
         const postponeBtnContainer = document.createElement('div'); // Создаем контейнер для кнопки и изображения
-        postponeBtnContainer.className = 'postpone-button-container';
+         postponeBtnContainer.className = 'postpone-button-container';
 
         const postponeBtn = document.createElement('button');
         postponeBtn.className = 'postpone-button';

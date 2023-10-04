@@ -20,7 +20,13 @@
         gap: 20px; /* Расстояние между книгами */
     }
 
-        .books-list a { color: white;}
+        .books-list a {
+            color: white;
+        }
+
+        .books-list a:hover {
+            text-decoration: none;
+        }
 
             .books-list::after {
                 content: "";
@@ -118,3 +124,36 @@ select {
         font-size: 18px;
     }
 
+ /* Кнопки */
+.button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .button-container .basket-button {
+        background: none;
+        color: white;
+        font-size: 14px;
+        outline: 1px solid white;
+        padding: 0 10px;
+    }
+
+    .basket-button:hover {
+        background: linear-gradient(357deg, rgba(255,42,0,1) 0%, rgba(255,166,0,1) 100%);
+        outline: none;
+    }
+
+.button-container .postpone-button {
+    margin-left: 10px;
+    background: none;
+    border: none;
+}
+
+    .books-list .postpone-button img {
+        width: 30px;
+    }
+
+    .books-list.postpone-button:hover {
+        filter: brightness(0) invert(1);
+    }

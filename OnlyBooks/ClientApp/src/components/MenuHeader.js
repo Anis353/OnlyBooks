@@ -45,7 +45,7 @@ const MenuHeader = () => {
 								<li><a href="#">Книги на французском языке</a></li>
 							</ul>
 						</li>
-						<li><a href="#">Главное</a></li>
+						<li><a href="/">Главное</a></li>
 						<li><a href="#">Предметы</a>
 							<ul>
 								<li><a href="/category/subjectId=5/Русский язык">Русский язык</a></li>
