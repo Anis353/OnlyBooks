@@ -5,8 +5,8 @@ import Pagination from './Pagination';
 import './BooksList.css';
 import { fetchBookDetails } from '../utils/api.js';
 import { Fade } from "react-awesome-reveal";
-import { useDispatch, useSelector } from 'react-redux';
-import { addToCart, increaseQuantity } from '../redux/cartReducer';
+import AddToCartButton from './details/AddToCartButton';
+import AddToFavoriteButton from './details/AddToFavoriteButton';
 
 function BooksList() {
     const [books, setBooks] = useState([]);
@@ -16,9 +16,6 @@ function BooksList() {
     const [booksPerPage] = useState(24);
     const [totalPage, setTotalPage] = useState(0);
     const [sortBooks, setSortBooks] = useState([]);
-
-    const dispatch = useDispatch();
-    const cart = useSelector((state) => state.cart.cart);
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -67,26 +64,6 @@ function BooksList() {
         localStorage.setItem('currentPage', currentPage.toString());
     }, [currentPage]);
 
-    const addToCartHandler = (book) => {
-        const discountPercentage = book.discounts[0].discountPercentage;
-        const newItem = {
-            id: book.bookId,
-            image: book.coverImage,
-            title: book.title,
-            price: book.price,
-            discountPrice: Math.floor(book.price * (1 - discountPercentage / 100)),
-        };
-
-        // Проверка дублирования
-        const existingItem = cart.find((item) => item.id === newItem.id);
-        if (existingItem) {
-            // Если товар уже есть, увеличиваем его количество на 1
-            dispatch(increaseQuantity(existingItem.id));
-        } else {
-            // Если товара нет в корзине, добавляем его
-            dispatch(addToCart(newItem));
-        }
-    };
 
     const handleSortChange = (e) => {
         // Удаляем сохранения страницы пагинации
@@ -124,10 +101,8 @@ function BooksList() {
 
                             </a>
                             <div className="button-container">
-                                <button className="basket-button" onClick={() => addToCartHandler(book)}>В корзину</button>
-                                <button title="Отложить" className='postpone-button'>
-                                    <img src="/images/icons/icon-like.png" alt="отложить" />
-                                </button>
+                                <AddToCartButton book={book} />
+                                <AddToFavoriteButton book={book} />
                             </div>
                         </Fade>
                     </div>

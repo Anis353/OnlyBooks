@@ -100,15 +100,6 @@
         border-radius: 5px;
     }
 
-        .product-button button:hover {
-            background: linear-gradient(357deg, rgba(255,162,0,1) 0%, rgba(255,16,0,1) 50%);
-        }
-
-        .product-button button span {
-            font: 19px "Georgia", sans-serif;
-        }
-
-
 .product-icons{
     margin-top: 10px;
 }
@@ -122,22 +113,23 @@
 .product-icons a::before {
     content: "";
     display: inline-block;
-    width: 20px; /* Размер иконки */
+    width: 20px; 
     height: 20px;
     background-repeat: no-repeat;
-    background-size: contain; /* Изменяет размер изображения для лучшего вмещения */
-    margin-right: 7px; /* Расстояние между иконкой и текстом */
+    background-size: contain;
+    margin-right: 7px; 
     vertical-align: middle;
 }
 
-/* Стили для .fave (Избранное) */
-.product-icons .fave::before {
-    background-image: url(../../public/images/icons/icon-star.png); /* Путь к иконке для избранного */
+.fave .postpone-button {
+    background: none;
+    border: none;
+    margin-bottom: 5px;
 }
 
-/* Стили для .compare (Сравнить) */
-.product-icons .compare::before {
-    background-image: url(../../public/images/icons/icon-list.png); /* Путь к иконке для сравнения */
+
+.fave .postpone-button img {
+    width: 40px;
 }
 
 /* Стили для иконок */

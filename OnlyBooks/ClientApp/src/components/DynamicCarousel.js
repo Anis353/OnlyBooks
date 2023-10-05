@@ -6,6 +6,7 @@ import axios from 'axios';
 import "./Carousel.css";
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, increaseQuantity } from '../redux/cartReducer';
+import { addToFavorite } from '../redux/favoriteReducer';
 
 // Динамическая пагинация карусели
 const DynamicCarousel = ({ carouselId, filter }) => {
@@ -15,9 +16,12 @@ const DynamicCarousel = ({ carouselId, filter }) => {
     const [loadingMore, setLoadingMore] = useState(false);
     const flickityInstanceRef = useRef(null);
     const [discounts, setDiscounts] = useState([]);
+    const [showFavoriteNotification, setShowFavoriteNotification] = useState(false);
 
     const dispatch = useDispatch();
     const cart = useSelector((state) => state.cart.cart);
+    const favorite = useSelector((state) => state.favorite.favorite);
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -98,12 +102,16 @@ const DynamicCarousel = ({ carouselId, filter }) => {
 
     // Добавление в корзину
     const addToCartHandler = (book) => {
+        const discountPercentage = (book.discounts && book.discounts.length > 0)
+            ? book.discounts[0].discountPercentage
+            : 0;
+
         const newItem = {
             id: book.bookId,
             image: book.coverImage,
             title: book.title,
             price: book.price,
-            discountPrice: Math.floor(book.price * (1 - book.discount / 100)),
+            discountPrice: Math.floor(book.price * (1 - discountPercentage / 100)),
         };
 
         // Проверка дублирования
@@ -114,6 +122,31 @@ const DynamicCarousel = ({ carouselId, filter }) => {
         } else {
             // Если товара нет в корзине, добавляем его
             dispatch(addToCart(newItem));
+        }
+    };
+
+
+    const addToFavoriteHandler = (book) => {
+        const discountPercentage = (book.discounts && book.discounts.length > 0)
+            ? book.discounts[0].discountPercentage
+            : 0;
+
+        const newItem = {
+            id: book.bookId,
+            image: book.coverImage,
+            title: book.title,
+            price: book.price,
+            discountPrice: Math.floor(book.price * (1 - discountPercentage / 100)),
+        };
+        console.log("Добавлено в избранное");
+        // Проверка дублирования
+        const existingItem = favorite.find((item) => item.id === newItem.id);
+        if (existingItem) {
+            return;
+        } else {
+            dispatch(addToFavorite(newItem));
+            setShowFavoriteNotification(true);
+            setTimeout(() => setShowFavoriteNotification(false), 2000);
         }
     };
 
@@ -228,11 +261,12 @@ const DynamicCarousel = ({ carouselId, filter }) => {
          basketBtn.addEventListener('click', () => addToCartHandler(book));
 
         // Кнопка отложить
-        const postponeBtnContainer = document.createElement('div'); // Создаем контейнер для кнопки и изображения
-         postponeBtnContainer.className = 'postpone-button-container';
+        const postponeBtnContainer = document.createElement('div'); 
+        postponeBtnContainer.className = 'postpone-button-container';
 
         const postponeBtn = document.createElement('button');
         postponeBtn.className = 'postpone-button';
+        postponeBtn.addEventListener('click', () => addToFavoriteHandler(book))
 
         const postponeImg = document.createElement('img');
         postponeImg.src = "/images/icons/icon-like.png" 

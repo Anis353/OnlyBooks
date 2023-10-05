@@ -23,6 +23,7 @@
 .cart.book {
     padding: 10px;
     transition: transform 0.3s ease;
+    margin: 50px 0;
 }
 
 .cart.book img {

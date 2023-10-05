@@ -150,10 +150,35 @@ select {
     border: none;
 }
 
-    .books-list .postpone-button img {
-        width: 30px;
+.books-list .postpone-button img {
+    width: 30px;
+    height: 30px;
+}
+
+.postpone-button:hover {
+    background-image: url('../../public/images/icons/icon-like-red.png');
+    background-size: contain; 
+    background-repeat: no-repeat; 
+}
+
+.favorite-notification {
+    position: fixed;
+    top: 70%;
+    left: 25%;
+    background-color: green; 
+    color: white; 
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 999999; 
+    animation: fadeInOut 2s linear; 
+}
+
+@keyframes fadeInOut {
+    0%, 100% {
+        opacity: 0;
     }
 
-    .books-list.postpone-button:hover {
-        filter: brightness(0) invert(1);
+    50% {
+        opacity: 1;
     }
+}

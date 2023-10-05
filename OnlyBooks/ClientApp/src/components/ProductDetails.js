@@ -4,37 +4,14 @@ import { fetchBookDetails, fetchBooksCategory } from '../utils/api';
 import "./ProductDetails.css";
 import RatingArea from './RatingArea.js';
 import Carousel from "./Carousel";
-import { useDispatch, useSelector } from 'react-redux';
-import { addToCart, increaseQuantity } from '../redux/cartReducer';
+import AddToCartButton from './details/AddToCartButton';
+import AddToFavoriteButton from './details/AddToFavoriteButton';
 
 function ProductDetails()  {
     const { id } = useParams();
     const [book, setBook] = useState(null);
     const [books, setBooks] = useState([]);
     const bookId = parseInt(id, 10);
-
-    const dispatch = useDispatch();
-    const cart = useSelector((state) => state.cart.cart);
-
-    const addToCartHandler = () => {
-        const newItem = {
-            id: book.bookId,
-            image: book.coverImage,
-            title: book.title,
-            price: book.price,
-            discountPrice: Math.floor(book.price * (1 - book.discount / 100))
-        };
-
-        // Проверка дублирования
-        const existingItem = cart.find(item => item.id === newItem.id);
-        if (existingItem) {
-            // Если товар уже есть, увеличиваем его количество на 1
-            dispatch(increaseQuantity(existingItem.id));
-        } else {
-            // Если товара нет в корзине, добавляем его
-            dispatch(addToCart(newItem));
-        }
-    };
 
     useEffect(() => {
         async function fetchDetails() {
@@ -90,17 +67,12 @@ function ProductDetails()  {
                                 }
                             </div>
                             <div className='product-button'>
-                                <button type='button' onClick={addToCartHandler} >
-                                <span>Добавить в корзину</span>
-                                </button>
+                                <AddToCartButton book={book} />
                             </div>
                             <div className='product-icons'>
-                                <a href='#' className='fave'>
-                                    <span>Добавить в отложенные</span>
-                                </a>
-                                <a href='#' className='compare'>
-                                    <span>+ к сравнению</span>
-                                </a>
+                                <div href='#' className='fave'>
+                                    <AddToFavoriteButton book={book} />
+                                </div>
                             </div>
                         </div>
                         <div className="articul">ID товара: {book.bookId}</div>

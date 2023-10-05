@@ -1,10 +1,12 @@
 ﻿import { createStore, combineReducers } from 'redux';
 import { cartReducer } from './cartReducer';
+import { favoriteReducer } from './favoriteReducer';
 import { userReducer } from './userReducer';
 
 const rootReducer = combineReducers({
     cart: cartReducer,
     auth: userReducer,
+    favorite: favoriteReducer
 });
 
 const loadState = () => {

@@ -22,35 +22,37 @@ function NavMenu() {
             <div className="wrapper">
                 <Navbar className="navbar-expand-sm ng-white box-shadow mb-3">
                     <NavbarBrand tag={Link} to="/">
-                        <img className="logo" src="/images/logo.png" />
+                        <img className="logo" src="/images/logo.png" alt="" />
                     </NavbarBrand>
                     <div className="tools-header">
                         <NavbarToggler onClick={toggleNavbar} className="mr-2" />
                         <SearchBar />
                         <div className="personal-tools">
                             <button className="btn-message">
-                                <img src="/images/icons/icon-message-static.png" />
+                                <img src="/images/icons/icon-message-static.png" alt="" />
                                 Сообщение
                             </button>
                             <button className="btn-office">
                                 {user ? (   
                                     user.role === 'Admin' ? (
                                         <a href="/admin/profile">
-                                            <img src="/images/icons/icon-office.png" />
+                                            <img src="/images/icons/icon-office.png" alt="" />
                                             Мой профиль 
                                         </a>) : (
                                         <a href="/profile">
-                                            <img src="/images/icons/icon-office.png" />
+                                            <img src="/images/icons/icon-office.png" alt="" />
                                             Мой профиль 
                                         </a>)
                                 ) : (<a href="/login">
-                                        <img src="/images/icons/icon-office.png" />
+                                        <img src="/images/icons/icon-office.png" alt="" />
                                     Вход
                                 </a>)}
                             </button>
                             <button className="btn-favorite">
-                                <img src="/images/icons/icon-favorite.png" />
-                                Отложено
+                                <a href="/favorite">
+                                    <img src="/images/icons/icon-favorite.png" alt="" />
+                                    Избранное
+                                </a>
                             </button>
                             <button className="btn-cart" >
                                 <a href="/cart">

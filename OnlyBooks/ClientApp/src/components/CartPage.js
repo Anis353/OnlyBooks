@@ -46,10 +46,12 @@ const CartPage = () => {
                         {cartItems.map(item => (
                             <div className="cart book" key={item.id}>
                                 <button className="btn-del" onClick={() => handleRemoveFromCart(item.id)}><img alt="delete" src="/images/icons/icon-del.png" /></button>
-                                <img src={item.image} alt={item.title} />
-                                <h3>{item.title}</h3>
-                                <span className="price">{(item.discountPrice > 0 ? item.discountPrice : item.price)}</span>
-                                <div className="quantity">{(item.quantity > 1 ? `Количество: ${item.quantity}` : '')}</div>
+                                <a href={`/book/${item.id}`} >
+                                    <img src={item.image} alt={item.title} />
+                                    <h3>{item.title}</h3>
+                                    <span className="price">{(item.discountPrice > 0 ? item.discountPrice : item.price)}</span>
+                                    <div className="quantity">{(item.quantity > 1 ? `Количество: ${item.quantity}` : '')}</div>
+                                </a>
                             </div>
                         ))}
                     </div>

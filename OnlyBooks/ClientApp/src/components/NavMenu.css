@@ -136,7 +136,7 @@ header {
         transform: translateX(-50%);
     }
 
-    .btn-office a, .btn-cart a {
+    .btn-office a, .btn-cart a, .btn-favorite a {
         color: white;
     }
 
