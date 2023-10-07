@@ -11,9 +11,6 @@ function AddToCartButton({ book }) {
             ? book.discounts[0].discountPercentage
             : 0;
 
-        if (discountPercentage === 0 && book.discount > 0 ) {
-            discountPercentage = book.discount;
-        }
 
         const newItem = {
             id: book.bookId,

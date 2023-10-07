@@ -1,6 +1,7 @@
-﻿import React, { useState, useRef } from 'react';
+﻿import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, updateUser } from '../../redux/userReducer';
+import { format } from 'date-fns';
 import './ClientProfile.css';
 
 function ClientProfile() {
@@ -15,7 +16,80 @@ function ClientProfile() {
     });
     const [image, setImage] = useState(user.imageUrl || '');
     const imageInputRef = useRef(null);
+    const [orders, setOrders] = useState([]);
+    const [clientLevel, setClientLevel] = useState(1);
+    const [selectedPeriod, setSelectedPeriod] = useState('день'); // Хранит выбранный период
+    const [expenses, setExpenses] = useState(0); // Хранит сумму потраченных средств
 
+    const handleEdit = () => {
+        setIsEditing(true);
+    };
+
+    const handleChange = e => {
+        const { name, value } = e.target;
+        setEditedData({ ...editedData, [name]: value });
+    };
+
+    // Нажатия на кнопку выбора периода
+    const handlePeriodClick = (period) => {
+        setSelectedPeriod(period);
+    };
+
+    const calculateExpenses = () => {
+        const currentDate = new Date();
+        let startDate;
+
+        if (selectedPeriod === 'день') {
+            startDate = new Date(currentDate);
+        } else if (selectedPeriod === 'неделя') {
+            startDate = new Date(currentDate);
+            startDate.setDate(currentDate.getDate() - 7);
+        } else if (selectedPeriod === 'месяц') {
+            startDate = new Date(currentDate);
+            startDate.setMonth(currentDate.getMonth() - 1);
+        }
+
+        // Фильтруем заказы, учитывая выбранный период
+        const filteredOrders = orders.filter((order) => {
+            const orderDate = new Date(order.orderDate);
+            return orderDate >= startDate && orderDate <= currentDate && order.paymentStatus === 'Оплачено';
+        });
+
+        // Рассчитываем сумму потраченных средств
+        const totalExpenses = filteredOrders.reduce((total, order) => total + order.totalAmount, 0);
+        setExpenses(totalExpenses);
+    };
+
+    // Сумма потраченных средств
+    useEffect(() => {
+        calculateExpenses();
+    }, [selectedPeriod, orders]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                // Берем заказы данного пользователя
+                console.log('user.id:', user.id);
+                const ordersResponse = await fetch(`/api/user/GetOrdersByUserId?id=${user.id}`);
+                const ordersData = await ordersResponse.json();
+                setOrders(ordersData);
+                console.log(ordersData);
+
+                // Рассчитываем уровень клиента по количеству заказов
+                const numberOfOrders = ordersData.filter(order => order.paymentStatus === "Оплачено").length;
+                const newClientLevel = Math.ceil(numberOfOrders / 5);
+
+                setClientLevel(newClientLevel);
+
+            } catch (error) {
+                console.error('Ошибка при получении данных:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    // Обновление картинки
     const handleImageUpload = async e => {
         const file = e.target.files[0];
         if (!file) return;
@@ -41,15 +115,7 @@ function ClientProfile() {
         }
     };
 
-    const handleEdit = () => {
-        setIsEditing(true);
-    };
-
-    const handleChange = e => {
-        const { name, value } = e.target;
-        setEditedData({ ...editedData, [name]: value });
-    };
-
+    // Редактирование данных
     const handleSave = async () => {
         const response = await fetch('/api/user/update', {
             method: 'POST',
@@ -78,8 +144,10 @@ function ClientProfile() {
     };
 
     return (
+        <div className="client-profile">
         <div className="profile-container">
-            <h2>Профиль</h2>
+                <h2>Клиент</h2>
+                <span>{`${clientLevel} уровень`}</span>
             {user && (
                 <div className="profile-info">
                     <div className="profile-image">
@@ -96,9 +164,20 @@ function ClientProfile() {
                         <p className="name">{user.firstName} {user.lastName}</p>
                     </div>
                     <div className="profile-details">
-                        <p>Почта: {user.email}</p>
-                        <p>Телефон: {user.phone}</p>
-                        <p>Адрес: {user.address}</p>
+                            <div className="info-row">
+                                <p className="info-label">Почта:</p>
+                                <p className="info-value">{user.email}</p>
+                            </div>
+
+                            <div className="info-row">
+                                <p className="info-label">Телефон:</p>
+                                <p className="info-value">{user.phone}</p>
+                            </div>
+
+                            <div className="info-row">
+                                <p className="info-label">Адрес:</p>
+                                <p className="info-value">{user.address}</p>
+                            </div>
                     </div>
                     {!isEditing ? (
                         <button className="edit-button" onClick={handleEdit}>
@@ -148,6 +227,54 @@ function ClientProfile() {
             <button className="logout-button" onClick={handleLogout}>
                 <a className="logout-link" href="/login">Выйти</a>
             </button>
+            </div>
+            <div className="profile-orders-container">
+                <h3>История заказов</h3>
+                {orders.length === 0 ? (
+                    <p>Заказов нет</p>
+                ) : (
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Дата заказа</th>
+                                <th>Общая цена</th>
+                                <th>Адрес доставки</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {orders.map((order) => (
+                                order.paymentStatus === "Оплачено" && (
+                                    <tr key={order.id}>
+                                        <td className="order-date"> {format(new Date(order.orderDate), 'yyyy-MM-dd HH:mm')}</td> 
+                                        <td className="totalAmount">{order.totalAmount}</td>
+                                        <td>{order.shippingAddress}</td>
+                                    </tr>
+                                )
+                            ))}
+                        </tbody>
+                    </table>
+                )}
+            </div>
+            <div>
+            <div className="client-level">
+                    <p>Уровень клиента: {clientLevel}</p>
+                <div className="progress-bar">
+                    <div className="progress-fill" style={{ width: `${(clientLevel / 5) * 100}%` }}>
+                        </div>
+                    </div>
+                  <span>Заказов до следующего уровня: {` ${6 - clientLevel} `}</span>
+                   
+            </div>
+            <div className="expenses-container">
+                <h3>Потрачено</h3>
+                <div className="period-selection">
+                        <button onClick={() => handlePeriodClick('день')}>За день</button>
+                        <button onClick={() => handlePeriodClick('неделя')}>За неделю</button>
+                        <button onClick={() => handlePeriodClick('месяц')}>За месяц</button>
+                </div>
+                    <p>{expenses.toLocaleString('ru-RU')} рублей</p>
+                </div>
+            </div>
         </div>
     );
 }

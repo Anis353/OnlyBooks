@@ -197,6 +197,20 @@ namespace OnlyBooks.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetOrdersByUserId")]
+        public async Task<IActionResult> GetOrdersByUserId(int id)
+        {
+            var orders = await _context.Orders.Where(order => order.UserId == id).ToListAsync();
+
+            if (orders == null)
+            {
+                return NotFound("История заказов пуста");
+            }
+
+            return  Ok(orders);
+        }
+
     }
 
 }

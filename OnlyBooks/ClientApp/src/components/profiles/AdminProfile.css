@@ -6,6 +6,7 @@
 .admin-profile-container {
     flex: 1;
     padding: 20px;
+    min-width: 300px;
     text-align: left;
     max-width: 400px;
     border: 1px solid #eaeaea0d;
@@ -148,7 +149,8 @@
 
 .admin-orders-container {
     flex: 1;
-    max-width: 500px;
+    min-width: 400px;
+    max-width: 600px;
     max-height: 700px;
     overflow-y: auto;
     border: 1px solid #eaeaea0d;
@@ -187,6 +189,16 @@
         content: " \20BD";
     }
 
+.btn-paid-order {
+    border: none;
+    border-radius: 10px;
+    padding: 2px 10px;
+    color: white;
+    background-color: #0058b1;
+    margin-left: 40px;
+}
+
+
 .admin-users-container {
     display: inline-block;
     border: 1px solid #eaeaea0d;
@@ -196,18 +208,45 @@
     padding: 5px 20px;
 }
 
-    /* Стили для таблицы пользователей */
+    .admin-users-container h3 {
+        text-align: center;
+       
+    }
+
     .user-table {
-        width: 100%;
+        width: 90%;
         border-collapse: collapse;
         margin-top: 20px;
     }
 
-    /* Стили для ячеек таблицы с сокращением длинных строк */
-    .truncate {
-        max-width: 200px; /* Установите максимальную ширину, которая вам подходит */
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        padding: 5px; /* Расстояние между столбцами */
+        .user-table th {
+            background-color: #0889ff;
+            border-right: 1px solid;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .user-table td {
+            background-color: white;
+            color: black;
+            text-align: center;
+            font-size: 15px;
+            font: 1.0rem "Fira Sans", sans-serif;
+
+        }
+
+        .truncate {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 5px;
+        }
+
+.admin-profile .expenses-container {
+    height: 200px;
 }
+
+    .admin-profile .expenses-container h3 {
+        font-size: 22px;
+        margin-bottom: 20px;
+    }

@@ -17,6 +17,10 @@ function AdminProfile() {
     const [image, setImage] = useState(user.imageUrl || ''); 
     const imageInputRef = useRef(null);
     const [orders, setOrders] = useState([]);
+    const [showPaidOrders, setShowPaidOrders] = useState(false);
+    const [selectedPeriod, setSelectedPeriod] = useState('день'); // Хранит выбранный период
+    const [expenses, setExpenses] = useState(0); // Хранит сумму потраченных средств
+
     const [users, setUsers] = useState([]);
 
     const handleEdit = () => {
@@ -32,6 +36,41 @@ function AdminProfile() {
     const handleLogout = () => {
         dispatch(logout());
     };
+
+    // Нажатия на кнопку выбора периода
+    const handlePeriodClick = (period) => {
+        setSelectedPeriod(period);
+    };
+
+    const calculateExpenses = () => {
+        const currentDate = new Date();
+        let startDate;
+
+        if (selectedPeriod === 'день') {
+            startDate = new Date(currentDate);
+        } else if (selectedPeriod === 'неделя') {
+            startDate = new Date(currentDate);
+            startDate.setDate(currentDate.getDate() - 7);
+        } else if (selectedPeriod === 'месяц') {
+            startDate = new Date(currentDate);
+            startDate.setMonth(currentDate.getMonth() - 1);
+        }
+
+        // Фильтруем заказы, учитывая выбранный период
+        const filteredOrders = orders.filter((order) => {
+            const orderDate = new Date(order.orderDate);
+            return orderDate >= startDate && orderDate <= currentDate && order.paymentStatus === 'Оплачено';
+        });
+
+        // Рассчитываем сумму потраченных средств
+        const totalExpenses = filteredOrders.reduce((total, order) => total + order.totalAmount, 0);
+        setExpenses(totalExpenses);
+    };
+
+    // Сумма заработанных средств
+    useEffect(() => {
+        calculateExpenses();
+    }, [selectedPeriod, orders]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -53,10 +92,9 @@ function AdminProfile() {
     }, []);
 
     // Меняем статус оплаты таблицы Order
-    const handlePaymentStatusChange = async (index, status) => {
+    const handlePaymentStatusChange = async(orderId, status) => {
         try {
-            const selectedOrder = orders[index];
-            const response = await fetch(`/api/admin/update-payment-status/${selectedOrder.orderId}`, {
+            const response = await fetch(`/api/admin/update-payment-status/${orderId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -64,10 +102,14 @@ function AdminProfile() {
                 body: JSON.stringify({ paymentStatus: status }),
             });
 
+            console.log(orderId);
+
             if (response.ok) {
                 const updatedOrders = [...orders];
-                updatedOrders[index].paymentStatus = status;
+                const orderIndex = updatedOrders.findIndex(order => order.orderId === orderId);
+                updatedOrders[orderIndex].paymentStatus = status;
                 setOrders(updatedOrders);
+
             } else {
                 console.error('Ошибка при обновлении статуса оплаты');
             }
@@ -238,22 +280,48 @@ function AdminProfile() {
                 <a className="admin-logout-link" href="/login">Выйти</a>
             </button>
         </div>
-          <div className="admin-orders-container">
+            <div className="admin-orders-container">
                 <h3>Заказы</h3>
                 <ul>
-                    {orders.map((order, index) => (
-                        <li key={index}>
-                            <strong>Email:</strong> {order.email}<br />
-                            <strong>Дата заказа:</strong> {format(new Date(order.orderDate), 'yyyy-MM-dd HH:mm')} <br />
-                            <strong>Сумма заказа:</strong><span className="totalAmount"> {order.totalAmount}</span><br />
-                            <strong>Статус оплаты:</strong> {order.paymentStatus}<br />
-                            <strong>Адрес доставки:</strong> {order.shippingAddress}<br />
-                            <button onClick={() => handlePaymentStatusChange(index, 'Оплачено')}>Оплачено</button>
-                            <button onClick={() => handleDeleteOrder(index)}>Отмена</button>
-                        </li>
-                    ))}
+                    {orders
+                        .filter(order => order.paymentStatus !== 'Оплачено')
+                        .map((order, index) => (
+                            <li key={order.orderId}>
+                                <strong>Email:</strong> {order.email}<br />
+                                <strong>Дата заказа:</strong> {format(new Date(order.orderDate), 'yyyy-MM-dd HH:mm')} <br />
+                                <strong>Сумма заказа:</strong><span className="totalAmount"> {order.totalAmount}</span><br />
+                                <strong>Статус оплаты:</strong> {order.paymentStatus}<br />
+                                <strong>Адрес доставки:</strong> {order.shippingAddress}<br />
+                                <button onClick={() => handlePaymentStatusChange(order.orderId, 'Оплачено')}>Оплачено</button>
+                                <button onClick={() => handleDeleteOrder(index)}>Отмена</button>
+                            </li>
+                        ))}
                 </ul>
+                <button className="btn-paid-order" onClick={() => setShowPaidOrders(!showPaidOrders)}>
+                    {showPaidOrders ? 'Скрыть оплаченные заказы' : 'Показать оплаченные заказы'}
+                </button>
+                {showPaidOrders && (
+                <div className="unpaid-orders-section">
+                    <h3>Оплаченные заказы</h3>
+                    <ul>
+                        {orders
+                            .filter(order => order.paymentStatus === 'Оплачено')
+                            .map((order, index) => (
+                                <li key={order.orderId}>
+                                    <strong>Email:</strong> {order.email}<br />
+                                    <strong>Дата заказа:</strong> {format(new Date(order.orderDate), 'yyyy-MM-dd HH:mm')} <br />
+                                    <strong>Сумма заказа:</strong><span className="totalAmount"> {order.totalAmount}</span><br />
+                                    <strong>Статус оплаты:</strong> {order.paymentStatus}<br />
+                                    <strong>Адрес доставки:</strong> {order.shippingAddress}<br />
+                                    <button onClick={() => handlePaymentStatusChange(order.orderId, 'Оплачено')}>Оплачено</button>
+                                    <button onClick={() => handleDeleteOrder(order.orderId)}>Отмена</button>
+                                </li>
+                            ))}
+                    </ul>
+                    </div>
+                )}
             </div>
+            <div>
             <div className="admin-users-container">
                 <h3>Пользователи</h3>
                 <table className="user-table">
@@ -277,8 +345,18 @@ function AdminProfile() {
                     </tbody>
                 </table>
             </div>
+            <div className="expenses-container">
+                <h3>Заработано</h3>
+                <div className="period-selection">
+                    <button onClick={() => handlePeriodClick('день')}>За день</button>
+                    <button onClick={() => handlePeriodClick('неделя')}>За неделю</button>
+                    <button onClick={() => handlePeriodClick('месяц')}>За месяц</button>
+                </div>
+                <p>{expenses.toLocaleString('ru-RU')} рублей</p>
+                </div>
+            </div>
+        </div>
 
-     </div>
     );
 }
 
