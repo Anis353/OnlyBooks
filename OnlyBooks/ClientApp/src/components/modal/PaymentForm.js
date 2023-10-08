@@ -11,6 +11,7 @@ function PaymentForm({ closePaymentModal }) {
     const [error, setError] = useState('');
     const [isPaymentCompleted, setIsPaymentCompleted] = useState(false);
     const phoneNumberUtil = PhoneNumberUtil.getInstance();
+    const { DateTime } = require('luxon');
 
     const user = useSelector(state => state.auth.user);
     const totalPrice = useSelector(state => state.cart.totalPrice);
@@ -28,11 +29,8 @@ function PaymentForm({ closePaymentModal }) {
         }
 
         if (user !== null) {
-            // Получение текущей даты и времени
             const currentDateTime = new Date();
-
-            // Форматирование даты и времени в строку, например, в формате ISO
-            const formattedDateTime = currentDateTime.toISOString();
+            const formattedDateTime = currentDateTime.toISOString(); 
 
             // Добавить в таблицу Orders
             const response = await fetch('/api/books/postOrder', {
@@ -48,6 +46,10 @@ function PaymentForm({ closePaymentModal }) {
                     shippingAddress: user.address
                 }),
             });
+
+            console.log(user.id);
+            console.log(formattedDateTime);
+            console.log(totalPrice);
 
             if (response.ok) {
                 console.log('Заказ добавлен в базу! ' + response);

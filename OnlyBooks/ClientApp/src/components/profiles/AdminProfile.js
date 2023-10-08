@@ -48,12 +48,15 @@ function AdminProfile() {
 
         if (selectedPeriod === 'день') {
             startDate = new Date(currentDate);
+            startDate.setHours(0, 0, 0, 0); 
         } else if (selectedPeriod === 'неделя') {
             startDate = new Date(currentDate);
             startDate.setDate(currentDate.getDate() - 7);
+            startDate.setHours(0, 0, 0, 0); 
         } else if (selectedPeriod === 'месяц') {
             startDate = new Date(currentDate);
             startDate.setMonth(currentDate.getMonth() - 1);
+            startDate.setHours(0, 0, 0, 0); 
         }
 
         // Фильтруем заказы, учитывая выбранный период
@@ -314,7 +317,7 @@ function AdminProfile() {
                                     <strong>Статус оплаты:</strong> {order.paymentStatus}<br />
                                     <strong>Адрес доставки:</strong> {order.shippingAddress}<br />
                                     <button onClick={() => handlePaymentStatusChange(order.orderId, 'Оплачено')}>Оплачено</button>
-                                    <button onClick={() => handleDeleteOrder(order.orderId)}>Отмена</button>
+                                    <button onClick={() => handleDeleteOrder(order.orderId)}>Удалить</button>
                                 </li>
                             ))}
                     </ul>

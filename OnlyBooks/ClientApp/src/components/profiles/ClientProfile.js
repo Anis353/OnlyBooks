@@ -41,12 +41,15 @@ function ClientProfile() {
 
         if (selectedPeriod === 'день') {
             startDate = new Date(currentDate);
+            startDate.setHours(0, 0, 0, 0); // Обнуляем время
         } else if (selectedPeriod === 'неделя') {
             startDate = new Date(currentDate);
             startDate.setDate(currentDate.getDate() - 7);
+            startDate.setHours(0, 0, 0, 0); 
         } else if (selectedPeriod === 'месяц') {
             startDate = new Date(currentDate);
             startDate.setMonth(currentDate.getMonth() - 1);
+            startDate.setHours(0, 0, 0, 0); 
         }
 
         // Фильтруем заказы, учитывая выбранный период
@@ -58,6 +61,8 @@ function ClientProfile() {
         // Рассчитываем сумму потраченных средств
         const totalExpenses = filteredOrders.reduce((total, order) => total + order.totalAmount, 0);
         setExpenses(totalExpenses);
+
+        console.log(startDate);
     };
 
     // Сумма потраченных средств
@@ -262,7 +267,7 @@ function ClientProfile() {
                     <div className="progress-fill" style={{ width: `${(clientLevel / 5) * 100}%` }}>
                         </div>
                     </div>
-                  <span>Заказов до следующего уровня: {` ${6 - clientLevel} `}</span>
+                  <span>Заказов до следующего уровня: {` ${5 - clientLevel} `}</span>
                    
             </div>
             <div className="expenses-container">
