@@ -168,7 +168,7 @@ function ClientProfile() {
                     <div className="profile-name">
                         <p className="name">{user.firstName} {user.lastName}</p>
                     </div>
-                    <div className="profile-details">
+                    <div className="profile-details">ы
                             <div className="info-row">
                                 <p className="info-label">Почта:</p>
                                 <p className="info-value">{user.email}</p>

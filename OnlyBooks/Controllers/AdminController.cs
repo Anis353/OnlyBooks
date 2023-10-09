@@ -94,13 +94,36 @@ namespace OnlyBooks.Controllers
             return NoContent();
         }
 
+        [HttpPut("update-user")]
+        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserViewModel model)
+        {
+            // Найдите пользователя по ID
+            var user = await _userManager.FindByEmailAsync(model.Email);
 
-        //[HttpGet("books")]
-        //public IActionResult GetBooks()
-        //{
-        //    var books = _context.Books.Sum(book => book.QuantityInStock);
-        //    return Ok(books);
-        //}
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            // Обновите данные пользователя
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.Phone = model.Phone;
+            user.Address = model.Address;
+
+            // Сохраните изменения в базе данных
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                return Ok(user);
+            }
+            else
+            {
+                // Обработка ошибок при обновлении пользователя
+                return BadRequest(result.Errors);
+            }
+        }
 
     }
 }

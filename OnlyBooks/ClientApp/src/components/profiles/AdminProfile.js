@@ -8,20 +8,23 @@ function AdminProfile() {
     const user = useSelector(state => state.auth.user);
     const dispatch = useDispatch();
     const [isEditing, setIsEditing] = useState(false);
+    const [image, setImage] = useState(user.imageUrl || '');
+    const imageInputRef = useRef(null);
+    const [orders, setOrders] = useState([]);
+    const [showPaidOrders, setShowPaidOrders] = useState(false);
+    const [selectedPeriod, setSelectedPeriod] = useState('день'); // Хранит выбранный период
+    const [expenses, setExpenses] = useState(0);                  // Хранит сумму потраченных средств
+    const [isModalVisible, setIsModalVisible] = useState(false);  // Видимость модального окна
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [users, setUsers] = useState([]);
+
+    // Данные профиля
     const [editedData, setEditedData] = useState({
         firstName: user.firstName,
         lastName: user.lastName,
         phone: user.phone,
         address: user.address,
     });
-    const [image, setImage] = useState(user.imageUrl || ''); 
-    const imageInputRef = useRef(null);
-    const [orders, setOrders] = useState([]);
-    const [showPaidOrders, setShowPaidOrders] = useState(false);
-    const [selectedPeriod, setSelectedPeriod] = useState('день'); // Хранит выбранный период
-    const [expenses, setExpenses] = useState(0); // Хранит сумму потраченных средств
-
-    const [users, setUsers] = useState([]);
 
     const handleEdit = () => {
         setIsEditing(true);
@@ -41,6 +44,96 @@ function AdminProfile() {
     const handlePeriodClick = (period) => {
         setSelectedPeriod(period);
     };
+
+    const openModal = (user) => {
+        setSelectedUser(user);
+        setIsModalVisible(true);
+    };
+
+    const closeModal = () => {
+        setSelectedUser(null);
+        setIsModalVisible(false);
+    };
+
+    // Модальное окно с информацией пользователя
+    function UserModal({ user, onClose }) {
+        const [editedUserData, setEditedUserData] = useState(user);
+
+        const handleChange = (e) => {
+            const { name, value } = e.target;
+            setEditedUserData({
+                ...editedUserData,
+                [name]: value,
+            });
+        };
+
+        const handleSave = async () => {
+            try {
+                const response = await fetch(`/api/admin/update-user`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(editedUserData),
+                });
+                console.log(editedUserData);
+
+                if (response.ok) {
+                    onClose();
+                } else {
+                    console.error('Ошибка при обновлении пользователя на сервере');
+                }
+            } catch (error) {
+                console.error('Ошибка при обновлении пользователя:', error);
+            }
+        };
+
+        return (
+            <div className="user-modal">
+                <h2>Информация о пользователе</h2>
+                <div className="name-group" >
+                <label>
+                    <input
+                        type="text"
+                        name="firstName"
+                        value={editedUserData.firstName}
+                        onChange={handleChange}
+                        placeholder="Имя"
+                    />
+                </label>
+                <label>
+                    <input
+                        type="text"
+                        name="lastName"
+                        value={editedUserData.lastName}
+                        onChange={handleChange}
+                        placeholder="Фамилия"
+                    />
+                    </label>
+                </div>
+                <label>
+                    <input
+                        type="text"
+                        name="phone"
+                        value={editedUserData.phone}
+                        onChange={handleChange}
+                        placeholder="Телефон"
+                    />
+                </label>
+                <label>
+                    <input
+                        type="text"
+                        name="address"
+                        value={editedUserData.address}
+                        onChange={handleChange}
+                        placeholder="Адрес"
+                    />
+                </label>
+                <button onClick={handleSave}>Сохранить</button>
+                <button onClick={onClose}>Закрыть</button>
+            </div>
+        );
+    }
 
     const calculateExpenses = () => {
         const currentDate = new Date();
@@ -92,7 +185,7 @@ function AdminProfile() {
             };
 
         fetchData();
-    }, []);
+    }, [isModalVisible]);
 
     // Меняем статус оплаты таблицы Order
     const handlePaymentStatusChange = async(orderId, status) => {
@@ -168,7 +261,6 @@ function AdminProfile() {
         }
     };
 
-    // Обновляем запись в таблице Order
     const handleSave = async () => {
         // Отправляем изменения на сервер
         const response = await fetch('/api/user/update', {
@@ -337,8 +429,8 @@ function AdminProfile() {
                         </tr>
                     </thead>
                     <tbody>
-                        {users.map((user, index) => (
-                            <tr key={index}>
+                            {users.map((user, index) => (
+                                <tr key={index} onClick={() => openModal(user)}>
                                 <td className="truncate">{user.firstName + ' ' + user.lastName}</td>
                                 <td className="truncate">{user.email}</td>
                                 <td className="truncate">{user.phone}</td>
@@ -346,7 +438,10 @@ function AdminProfile() {
                             </tr>
                         ))}
                     </tbody>
-                </table>
+                    </table>
+                    {isModalVisible && (
+                        <UserModal user={selectedUser} onClose={closeModal} />
+                    )}
             </div>
             <div className="expenses-container">
                 <h3>Заработано</h3>

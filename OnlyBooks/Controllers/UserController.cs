@@ -127,23 +127,24 @@ namespace OnlyBooks.Controllers
 
             if (user == null)
             {
-                return NotFound(); // Пользователь не найден
+                return NotFound();
             }
 
             user.FirstName = model.FirstName;
             user.LastName = model.LastName;
             user.Phone = model.Phone;
             user.Address = model.Address;
+            user.Email = model.Email;
 
             var result = await _userManager.UpdateAsync(user);
 
             if (result.Succeeded)
             {
-                return Ok(); // Успешное обновление
+                return Ok();
             }
             else
             {
-                return BadRequest(result.Errors); // Ошибка обновления
+                return BadRequest(result.Errors);
             }
         }
 
