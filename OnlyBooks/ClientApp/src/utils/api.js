@@ -1,6 +1,6 @@
 ﻿import React from 'react';
 
-// api.js
+// Отдельно берем книги и их скидки
 export async function fetchBooksAndDiscounts() {
     const booksResponse = await fetch("api/books/GetBooks");
     const booksData = await booksResponse.json();
@@ -107,4 +107,35 @@ export async function fetchBookDetails(bookId) {
     return bookWithDetails;
 }
 
+// Редактирование пользователей
+export async function updateUserInAdmin(userData) {
+    const response = await fetch('/api/admin/update-user', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+    });
+
+    if (response.ok) {
+        return true;
+    } else {
+        const error = await response.json();
+        throw new Error(error.message);
+    }
+}
+
+// Удаление пользователей
+export async function deleteUserInAdmin(email) {
+    const response = await fetch(`/api/admin/delete-user/${email}`, {
+        method: 'DELETE',
+    });
+
+    if (response.ok) {
+        return true;
+    } else {
+        const error = await response.json();
+        throw new Error(error.message);
+    }
+}
 

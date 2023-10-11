@@ -2,7 +2,8 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, updateUser } from '../../redux/userReducer';
 import { format } from 'date-fns';
-import "./AdminProfile.css"; 
+import "./AdminProfile.css";
+import { updateUserInAdmin, deleteUserInAdmin } from '../../utils/api';
 
 function AdminProfile() {
     const user = useSelector(state => state.auth.user);
@@ -69,22 +70,31 @@ function AdminProfile() {
 
         const handleSave = async () => {
             try {
-                const response = await fetch(`/api/admin/update-user`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(editedUserData),
-                });
-                console.log(editedUserData);
-
-                if (response.ok) {
+                const success = await updateUserInAdmin(editedUserData);
+                if (success) {
+                    console.log(editedUserData);
                     onClose();
                 } else {
                     console.error('Ошибка при обновлении пользователя на сервере');
                 }
             } catch (error) {
                 console.error('Ошибка при обновлении пользователя:', error);
+            }
+        };
+
+        const handleDelete = async () => {
+            if (window.confirm('Вы уверены, что хотите удалить этого пользователя?')) {
+                try {
+                    const success = await deleteUserInAdmin(editedUserData.email);
+                    console.log(success);
+                    if (success) {
+                        onClose();
+                    } else {
+                        console.error('Ошибка при удалении пользователя');
+                    }
+                } catch (error) {
+                    console.error('Ошибка при удалении пользователя:', error);
+                }
             }
         };
 
@@ -130,6 +140,7 @@ function AdminProfile() {
                     />
                 </label>
                 <button onClick={handleSave}>Сохранить</button>
+                <button onClick={handleDelete}>Удалить</button>
                 <button onClick={onClose}>Закрыть</button>
             </div>
         );

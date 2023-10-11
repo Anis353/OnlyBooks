@@ -125,5 +125,26 @@ namespace OnlyBooks.Controllers
             }
         }
 
+        [HttpDelete("delete-user/{email}")]
+        public async Task<IActionResult> DeleteUser(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userManager.DeleteAsync(user);
+
+            if (result.Succeeded)
+            {
+                return Ok(new { message = "Пользователь успешно удален" });
+            }
+            else
+            {
+                return BadRequest(new { message = "Ошибка при удалении пользователя", errors = result.Errors });
+            }
+        }
     }
 }

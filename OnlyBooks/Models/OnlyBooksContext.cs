@@ -203,6 +203,11 @@ public partial class OnlyBooksContext : IdentityDbContext<User, UserRole, int>
             entity.Property(e => e.Role).HasMaxLength(50);
         });
 
+        modelBuilder.Entity<User>()
+            .HasMany(u => u.Orders)
+            .WithOne(o => o.User)
+            .OnDelete(DeleteBehavior.Cascade);
+
         OnModelCreatingPartial(modelBuilder);
     }
 
