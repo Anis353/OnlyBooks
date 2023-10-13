@@ -31,8 +31,8 @@ function Register() {
 
         try {
             const response = await axios.post('api/user/register', formData);
-            console.log(response.data); 
             setRegistrationSuccess(true);
+            setErrorMessage('');
         } catch (error) {
             setErrorMessage('Ошибка регистрации: ' +  error);
         }

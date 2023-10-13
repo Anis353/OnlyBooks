@@ -20,6 +20,7 @@ function ClientProfile() {
     const [clientLevel, setClientLevel] = useState(1);
     const [selectedPeriod, setSelectedPeriod] = useState('день'); // Хранит выбранный период
     const [expenses, setExpenses] = useState(0); // Хранит сумму потраченных средств
+    localStorage.removeItem('currentPage');
 
     const handleEdit = () => {
         setIsEditing(true);
@@ -271,7 +272,7 @@ function ClientProfile() {
                    
             </div>
             <div className="expenses-container">
-                <h3>Потрачено</h3>
+                <h3>Покупок на</h3>
                 <div className="period-selection">
                         <button onClick={() => handlePeriodClick('день')}>За день</button>
                         <button onClick={() => handlePeriodClick('неделя')}>За неделю</button>

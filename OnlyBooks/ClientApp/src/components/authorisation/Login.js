@@ -13,6 +13,7 @@ function Login() {
     const [errorMessage, setErrorMessage] = useState(''); // Сообщения об ошибке
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    localStorage.removeItem('currentPage');
 
     const handleChange = (e) => {
         const { name, value } = e.target;

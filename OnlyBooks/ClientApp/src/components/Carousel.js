@@ -30,7 +30,7 @@ const Carousel = ({ items, carouselId, autoPlay }) => {
             {items.map((item) => (
                 <a key={item.bookId} className="gallery-cell-banner" href={`/book/${item.bookId}`}>
                     <img src={item.coverImage} alt={item.title} />
-                    {item.discount > 0 && ( // Показываем элемент скидки только если есть скидка
+                    {item.discount > 0 && ( 
                         <div className="discount-label">
                             {`${item.discount}%`}
                         </div>

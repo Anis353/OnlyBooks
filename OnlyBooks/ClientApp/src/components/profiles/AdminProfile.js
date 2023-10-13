@@ -18,6 +18,7 @@ function AdminProfile() {
     const [isModalVisible, setIsModalVisible] = useState(false);  // Видимость модального окна
     const [selectedUser, setSelectedUser] = useState(null);
     const [users, setUsers] = useState([]);
+    localStorage.removeItem('currentPage');
 
     // Данные профиля
     const [editedData, setEditedData] = useState({
@@ -226,16 +227,16 @@ function AdminProfile() {
     };
 
     // Удаляем запись из таблицы Order
-    const handleDeleteOrder = async (index) => {
+    const handleDeleteOrder = async (orderId) => {
         try {
-            const selectedOrder = orders[index];
-            const response = await fetch(`/api/admin/delete-order/${selectedOrder.orderId}`, {
+            const response = await fetch(`/api/admin/delete-order/${orderId}`, {
                 method: 'DELETE',
             });
 
             if (response.ok) {
                 const updatedOrders = [...orders];
-                updatedOrders.splice(index, 1);
+                const orderIndex = updatedOrders.findIndex(order => order.orderId === orderId);
+                updatedOrders.splice(orderIndex, 1);
                 setOrders(updatedOrders);
             } else {
                 console.error('Ошибка при удалении заказа');
@@ -399,7 +400,7 @@ function AdminProfile() {
                                 <strong>Статус оплаты:</strong> {order.paymentStatus}<br />
                                 <strong>Адрес доставки:</strong> {order.shippingAddress}<br />
                                 <button onClick={() => handlePaymentStatusChange(order.orderId, 'Оплачено')}>Оплачено</button>
-                                <button onClick={() => handleDeleteOrder(index)}>Отмена</button>
+                                <button onClick={() => handleDeleteOrder(order.orderId)}>Отмена</button>
                             </li>
                         ))}
                 </ul>
